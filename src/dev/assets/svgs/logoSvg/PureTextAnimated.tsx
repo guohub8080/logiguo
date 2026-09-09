@@ -52,14 +52,14 @@ const PureTextAnimated = ({ className }: PureTextAnimatedProps) => {
 					backgroundColor: googleColors.pinkA100,
 				}}
 			/>
-			{/* accent 层 B - O 内孔 x2，浅一档（pink200） */}
+			{/* accent 层 B - O 内孔 x2，浅一档（pink100） */}
 			<div
 				className="absolute inset-0"
 				style={{
 					...maskStyle,
 					maskImage: `url("${holesMaskSvg}")`,
 					WebkitMaskImage: `url("${holesMaskSvg}")`,
-					backgroundColor: googleColors.pink200,
+					backgroundColor: googleColors.pink100,
 				}}
 			/>
 		</div>
