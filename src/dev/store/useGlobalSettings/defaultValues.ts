@@ -8,12 +8,12 @@ export const DEFAULT_VALUES = {
   navigationHeight: 56,
   
   // 字体默认值 —— 站长优先字体在这里配置
-  // 默认全部 null（纯系统字体栈）：访客零字体流量，加载最快；访客可在 Settings 里自行切换
+  // 中文默认 minsans-v（MiSans VF，真实多字重）；其余 null 走系统栈，访客可在 Settings 里自行切换
   // 想让站点默认呈现某个 web 字体（渐进增强：CSS 懒注入 + swap，不阻塞渲染），
   // 改成对应 family 名即可（注册表见 webfontLoader.ts）：
   // CJK：'minsans-v' / 'syht-cn-v' / 'syst-cn-v'；拉丁 VF：'inter-v' / 'source-sans-3-v' /
   // 'source-serif-4-v' / 'cascadia-mono-v' 等；静态：'ibm-plex-sans' / 'jb-mono' 等
-  chineseFontFamily: null,
+  chineseFontFamily: 'minsans-v',
   englishFontFamily: null, // 跟随中文
   codeFontFamily: null, // 系统等宽栈；可用 'jb-mono'（JetBrains Mono）
   japaneseFontFamily: null, // 跟随中文（JP 字族已从字体仓库移除，中文场景用不上）
@@ -21,7 +21,7 @@ export const DEFAULT_VALUES = {
   // 字体权重默认值 - 全局设置（body 使用 font-normal）
   // Tailwind 字重类默认值
   fontWeightLight: 300,
-  fontWeightNormal: 350,
+  fontWeightNormal: 400,
   fontWeightMedium: 500,
   fontWeightSemibold: 600,
   fontWeightBold: 700,
