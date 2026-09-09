@@ -59,7 +59,7 @@ const PureTextAnimated = ({ className }: PureTextAnimatedProps) => {
 					...maskStyle,
 					maskImage: `url("${holesMaskSvg}")`,
 					WebkitMaskImage: `url("${holesMaskSvg}")`,
-					backgroundColor: googleColors.pink100,
+					backgroundColor: googleColors.pink200,
 				}}
 			/>
 		</div>
