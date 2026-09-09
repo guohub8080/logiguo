@@ -218,13 +218,14 @@ private _cache: X | undefined = void 0
 
 - 每次对话结束后，**自动 commit 当前所有未提交的改动**，使用 `git add -A`。提交信息遵循 **Conventional Commits** 规范（如 `feat(...)`、`refactor(...)`、`chore(deps): ...`）。
 - **暂时只 commit、不 push**：每次对话结束只做本地提交，**绝对禁止执行 `git push` 等远程命令**（除非用户在某次对话中明确要求 push，才单独执行那一次）。
+- **不要每次改动后都跑 `pnpm build` 验证**：文案、颜色、注释等纯字面量小改动直接提交即可；仅在大范围重构、类型/接口/路由改动、依赖变更，或用户明确要求验证时才构建。
 - 依赖刻意保持最新（近期刚整体升级到 React 19 + Vite 8 + TS 6 + ESLint 10）。`allowBuilds` / `minimumReleaseAgeExclude` 等设置见 `pnpm-workspace.yaml`。
 
 ### 已知坑（实测踩过）
 
 - **Mimosa hook 会把 `docs/` 构建产物当源码扫出高危误报并拦截 commit**（压缩混淆 bundle 里的正则 `.exec()` 被判「Shell 执行」）。实测 `policy init` 的默认策略（`forbidShell: true`）还会放大误报到源码——**不要 policy init**，且 `threatModel.exclusions` 对 L3 扫描范围无效（已实证）。可靠流程：**commit 前先 `rm -rf docs`**（构建产物 gitignored，随时可 `pnpm build` 重建）。若被拦截，按 hook 提示重扫放行。
 - **删除 docs/ 与 git commit 必须分成两条命令执行**：Mimosa 的 commit 门在**命令执行前**就扫工作区——若把「删除 docs/」和 `git add -A && git commit` 串成同一条 `&&` 链，扫描那一刻删除尚未发生、`docs/` 仍在 → 整条命令被拦，删除也不会执行（死锁：清理命令本身被它要清理的目录触发的拦截干掉）。正确做法分两步：先按上一条的流程单独删除 `docs/` 并确认 `ls -d docs` 报不存在（该步不含 `git commit`，不会触发 commit 门），再单独执行 `git add -A && git commit`。
-- **`pnpm lint` 跑不通**（预存）：装的 ESLint 8.57.1 与 `eslint.config.js` 引用的未安装依赖 `typescript-eslint` 不匹配，且 `--ext` 参数已废——验证代码用 `pnpm build`（tsc + vite）。
+- **`pnpm lint` 跑不通**（预存）：装的 ESLint 8.57.1 与 `eslint.config.js` 引用的未安装依赖 `typescript-eslint` 不匹配，且 `--ext` 参数已废——需要验证时用 `pnpm build`（tsc + vite），但按工作流规则不必每次都跑。
 - 改 `package.json` 等配置文件用 Write/Edit 工具，Bash 直接写会被 Mimosa PreToolUse 拦截。
 
 ## 联系方式
