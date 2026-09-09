@@ -32,7 +32,8 @@ const About: React.FC = () => {
           <div className="text-3xl text-card-foreground pt-0 flex items-center w-full justify-center mb-6 mt-6">
             <span className="block whitespace-nowrap">你好，我是</span>
             <GradientText
-              className="block font-bold tracking-tight leading-tight ml-1"
+              className="block tracking-tight leading-tight ml-1"
+              style={{ fontWeight: 700 }}
               text="方块郭"
               gradient="linear-gradient(135deg, #3b82f6 0%, #8b5cf6 33%, #06b6d4 66%, #3b82f6 100%)"
             />
