@@ -6,7 +6,7 @@ interface PureTextProps {
 }
 
 const PRIMARY = googleColors.blue700
-const ACCENT = googleColors.orange400
+const ACCENT = googleColors.purple500
 
 // LOGIGUO 字标（设计稿：logoSvg/logiguo.svg，Illustrator 29.0.1）
 // 画布 1474×342；I 为「竖笔 + 悬浮圆点」造型，圆点即 LogiGuo 的「·」品牌点

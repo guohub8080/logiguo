@@ -39,14 +39,14 @@ const PureTextAnimated = ({ className }: PureTextAnimatedProps) => {
 					animation: "gradientFlowPrimary 4s linear infinite",
 				}}
 			/>
-			{/* accent 层 - I 圆点 + O 内孔 橙色渐变动画（品牌色 2 = orange400） */}
+			{/* accent 层 - I 圆点 + O 内孔 紫色渐变动画（品牌色 2 = purple500） */}
 			<div
 				className="absolute inset-0"
 				style={{
 					...maskStyle,
 					maskImage: `url("${accentMaskSvg}")`,
 					WebkitMaskImage: `url("${accentMaskSvg}")`,
-					backgroundImage: `linear-gradient(90deg, ${googleColors.orange600}, ${googleColors.orange300}, ${googleColors.orange500}, ${googleColors.orange300}, ${googleColors.orange600})`,
+					backgroundImage: `linear-gradient(90deg, ${googleColors.purple600}, ${googleColors.purple300}, ${googleColors.purple500}, ${googleColors.purple300}, ${googleColors.purple600})`,
 					backgroundSize: "200% 100%",
 					animation: "gradientFlowAccent 6s linear infinite",
 				}}
