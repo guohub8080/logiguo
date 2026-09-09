@@ -59,7 +59,7 @@ export default function Home() {
 
 				{/* 副标题（苹果官网风格：中等字号、Regular、近主色、居中、呼吸感） */}
 				<p className="mt-4 text-center text-xl font-normal tracking-tight text-foreground/70 mx-8">
-					<span className="whitespace-nowrap">逻辑与思维的</span><span className="whitespace-nowrap">一站式工具箱</span>
+					<span className="whitespace-nowrap">逻辑、数学与代码的</span><span className="whitespace-nowrap">一站式工具箱</span>
 				</p>
 
 				{/* 操作条：系统 icon 按钮（居中） */}
@@ -117,7 +117,7 @@ export default function Home() {
 						<span className="text-center leading-relaxed max-w-xs text-neutral-500">
 							逻辑郭 ——
 								<br />
-							逻辑与思维的工具箱（建设中）
+							逻辑、数学与代码的工具箱（建设中）
 						</span>
 
 						{/* 部署镜像 */}

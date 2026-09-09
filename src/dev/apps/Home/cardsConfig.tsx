@@ -2,7 +2,7 @@
 /**
  * Home 页面卡片配置
  *
- * 站点定位：逻辑郭（LogiGuo）—— 逻辑与思维的工具箱（由 guookcase 复制改造）
+ * 站点定位：逻辑郭（LogiGuo）—— 逻辑、数学与代码的工具箱（由 guookcase 复制改造）
  * 分区（section）：站点 / 关于（单一通用导航组：logiguo 各部署镜像、GitHub 仓库、关于作者）
  * → 语言学习 / 写作积累（主轴）→ 音乐与创作（含 DAW 外链）/ 其他工具（存量）
  * 每个分区有若干子项（CardData），子项可以是 ready（真实功能）或 placeholder（占位，开发中）。
