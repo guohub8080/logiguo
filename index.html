@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+	<meta name="referrer" content="no-referrer"/>
+	<title>LogiGuo · 逻辑郭</title>
+	<style>
+		:root {
+			color-scheme: light dark;
+		}
+
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		body {
+			min-height: 100vh;
+			min-height: 100dvh;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+			background: linear-gradient(180deg, #f5f7fa 0%, #c3cfe2 100%);
+			/* 安全区：竖屏吸收上下 inset，横屏吸收左右 */
+			padding-top: constant(safe-area-inset-top);
+			padding-top: env(safe-area-inset-top);
+			padding-bottom: constant(safe-area-inset-bottom);
+			padding-bottom: env(safe-area-inset-bottom);
+			padding-left: constant(safe-area-inset-left);
+			padding-left: env(safe-area-inset-left);
+			padding-right: constant(safe-area-inset-right);
+			padding-right: env(safe-area-inset-right);
+		}
+
+		@media (prefers-color-scheme: dark) {
+			body {
+				background: linear-gradient(180deg, #10141c 0%, #1c2333 100%);
+			}
+
+			.title {
+				color: #7fb3f0;
+			}
+
+			.subtitle,
+			.status {
+				color: rgba(235, 240, 250, 0.55);
+			}
+		}
+
+		main {
+			text-align: center;
+			padding: 24px;
+		}
+
+		.title {
+			font-size: clamp(40px, 10vw, 72px);
+			font-weight: 800;
+			letter-spacing: -0.02em;
+			color: #1976D2;
+		}
+
+		.dot {
+			display: inline-block;
+			width: 0.16em;
+			height: 0.16em;
+			margin: 0 0.18em;
+			border-radius: 9999px;
+			background: #FFA726;
+			vertical-align: baseline;
+		}
+
+		.subtitle {
+			margin-top: 14px;
+			font-size: 16px;
+			letter-spacing: 0.35em;
+			text-indent: 0.35em;
+			color: rgba(30, 40, 60, 0.55);
+		}
+
+		.status {
+			margin-top: 42px;
+			font-size: 13px;
+			color: rgba(30, 40, 60, 0.45);
+		}
+
+		.status .bar {
+			display: inline-block;
+			vertical-align: middle;
+			width: 28px;
+			height: 3px;
+			margin: 0 12px;
+			border-radius: 9999px;
+			background: #FFA726;
+		}
+	</style>
+</head>
+<body>
+	<main>
+		<h1 class="title">Logi<span class="dot" aria-hidden="true"></span>Guo</h1>
+		<p class="subtitle">逻辑郭</p>
+		<p class="status"><span class="bar" aria-hidden="true"></span>建设中 · Coming soon<span class="bar" aria-hidden="true"></span></p>
+	</main>
+</body>
+</html>
