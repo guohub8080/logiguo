@@ -217,7 +217,7 @@ private _cache: X | undefined = void 0
 ## 工作流
 
 - 每次对话结束后，**自动 commit 当前所有未提交的改动**，使用 `git add -A`。提交信息遵循 **Conventional Commits** 规范（如 `feat(...)`、`refactor(...)`、`chore(deps): ...`）。
-- **绝对禁止执行 Push 远程命令**（除非用户明确要求）。
+- **暂时只 commit、不 push**：每次对话结束只做本地提交，**绝对禁止执行 `git push` 等远程命令**（除非用户在某次对话中明确要求 push，才单独执行那一次）。
 - 依赖刻意保持最新（近期刚整体升级到 React 19 + Vite 8 + TS 6 + ESLint 10）。`allowBuilds` / `minimumReleaseAgeExclude` 等设置见 `pnpm-workspace.yaml`。
 
 ### 已知坑（实测踩过）
