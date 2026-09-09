@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "lsof -ti:6767 | xargs kill -9 2>/dev/null; vite",
+    "dev": "lsof -ti:6868 | xargs kill -9 2>/dev/null; vite",
     "build": "tsc && vite build",
     "build:single": "SINGLE_FILE=true vite build",
     "gh": "GITHUB_PAGES=true pnpm build",

@@ -251,8 +251,9 @@ export default defineConfig({
   // 开发环境配置
   server: {
     // 固定端口：避免 vite 自动顺延（5173→5174→...）导致 cloudflared/书签/文档里的 URL 失效
-    // strictPort: 端口被占直接报错，配合 dev 脚本里的 lsof 强杀，保证始终是 5180
-    port: 6767,
+    // strictPort: 端口被占直接报错，配合 dev 脚本里的 lsof 强杀，保证始终是 6868
+    // （guookcase 用 6767；两个项目同时 dev 时互不干扰）
+    port: 6868,
     strictPort: true,
     host: true, // 允许局域网访问（手机同 WiFi 测试 + cloudflared tunnel）
     // 允许通过 cloudflared tunnel 绑定的域名访问（Vite 默认只允许 localhost，会 403）

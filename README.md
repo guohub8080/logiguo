@@ -23,7 +23,7 @@
 
 ```bash
 pnpm install    # 安装依赖
-pnpm dev        # 启动开发服务器 → http://localhost:5173
+pnpm dev        # 启动开发服务器 → http://localhost:6868（guookcase 用 6767，互不冲突）
 pnpm build      # 构建生产版本（tsc + vite，产物 → docs/）
 pnpm gh         # 以 GitHub Pages 配置构建（base: /logiguo/）
 ```
