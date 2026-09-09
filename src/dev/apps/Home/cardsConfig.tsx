@@ -72,7 +72,7 @@ export type SectionId = "sites" | "lang-learn" | "writing" | "music" | "other-to
 export interface Section {
 	id: SectionId
 	name: string
-	accent: string // 标题竖条 + 图标颜色
+	accent: string // 标题竖条 + 图标颜色（统一取 Google Material 500 档，见 @assets/colors/googleColors）
 	icon: React.ReactNode
 }
 
@@ -80,37 +80,37 @@ export const sections: Section[] = [
 	{
 		id: "sites",
 		name: "站点 / 关于",
-		accent: "#F59E0B",
+		accent: "#9C27B0",
 		icon: <Globe className="w-4 h-4" />,
 	},
 	{
 		id: "lang-learn",
 		name: "语言学习",
-		accent: "#7C3AED",
+		accent: "#3F51B5",
 		icon: <BookOpen className="w-4 h-4" />,
 	},
 	{
 		id: "writing",
 		name: "写作积累",
-		accent: "#F97316",
+		accent: "#FF9800",
 		icon: <PenLine className="w-4 h-4" />,
 	},
 	{
 		id: "music",
 		name: "音乐与创作",
-		accent: "#059669",
+		accent: "#4CAF50",
 		icon: <Music2 className="w-4 h-4" />,
 	},
 	{
 		id: "other-tools",
 		name: "其他工具",
-		accent: "#06B6D4",
+		accent: "#00BCD4",
 		icon: <Wrench className="w-4 h-4" />,
 	},
 	{
 		id: "system",
 		name: "设置",
-		accent: "#64748B",
+		accent: "#607D8B",
 		icon: <Info className="w-4 h-4" />,
 	},
 ]
