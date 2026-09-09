@@ -175,7 +175,7 @@ const sitesReady: CardData[] = [
 		id: "about",
 		section: "sites",
 		title: "关于作者",
-		description: <>你好，我是<span style={{ fontWeight: 700 }}>方块郭</span></>,
+		description: <>你好，我是<span style={{ fontWeight: 900 }}>方块郭</span></>,
 		icon: (
 			<svg viewBox="0 0 1024 1024" className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
 				<path d="M512.034133 512.034133m-485.0688 0a485.0688 485.0688 0 1 0 970.1376 0 485.0688 485.0688 0 1 0-970.1376 0Z" fill="#278BED" />
