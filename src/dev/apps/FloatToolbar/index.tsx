@@ -21,7 +21,7 @@ interface FloatToolbarProps {
  * 提供复制HTML、背景色设置、滚动控制等功能
  */
 const FloatToolbar = (props: FloatToolbarProps) => {
-  // 使用 zustand store 管理视图设置
+  // 视图设置 atoms（jotai）
   const bgColor = useAtomValue(bgColorAtom);
   const viewPadding = useAtomValue(viewPaddingAtom);
   const articleScroll = useAtomValue(articleScrollAtom);
