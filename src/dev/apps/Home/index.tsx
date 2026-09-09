@@ -7,7 +7,8 @@
  */
 import React from "react"
 import { useNavigate } from 'react-router'
-import { Settings as SettingsIcon, Info, Github } from "lucide-react"
+import { Settings as SettingsIcon, Info } from "lucide-react"
+import { IoLogoGithub } from "react-icons/io5"
 import Hero from "./Hero"
 import SectionBlock from "./SectionBlock"
 import { sections, initialCards } from "./cardsConfig.tsx"
@@ -32,7 +33,7 @@ const systemActions = [
 	{
 		id: "github",
 		label: "GitHub",
-		icon: <Github className="w-4 h-4" />,
+		icon: <IoLogoGithub className="w-4 h-4" />,
 		href: "https://github.com/guohub8080/logiguo",
 	},
 ]
