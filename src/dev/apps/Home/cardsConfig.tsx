@@ -40,7 +40,7 @@ const CloudflareIcon = () => (
 )
 const VercelIcon = () => (
 	<svg viewBox="0 0 24 24" fill="none" className="w-full h-full">
-		<path fill="currentColor" d="M23 21.648H1L12 2.352z"/>
+		<path fill="currentColor" d="M23 20.048H1L12 0.752z"/>
 	</svg>
 )
 const NetlifyIcon = () => (
