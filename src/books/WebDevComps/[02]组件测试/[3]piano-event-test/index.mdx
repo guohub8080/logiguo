@@ -1,0 +1,77 @@
+export const title = "OctavePiano 事件流演示"
+
+import PianoEventDemo from './PianoEventDemo'
+
+# OctavePiano 事件流演示
+
+<PianoEventDemo />
+
+## 事件流
+
+点击钢琴键时，事件按以下顺序流动：
+
+1. **用户点击**键 → 触发 `handleClick(pianoKeyId)`
+2. 若 `isPureDisplay={true}` → **直接返回**，不触发任何回调
+3. 否则 → 先触发 `keys[pianoKeyId].onClick?.()`（**逐键回调**）
+4. 最后 → 触发 `props.onClick?.(pianoKeyId)`（**顶层回调**）
+
+即：**逐键 onClick → 顶层 onClick**，两级回调都会执行。
+
+```
+点击键
+  │
+  ├─ isPureDisplay? ─── 是 ──→ 终止（无回调）
+  │
+  └─ 否
+       │
+       ├─ 1️⃣ keys[pianoKeyId].onClick?.()
+       │
+       └─ 2️⃣ props.onClick?.(pianoKeyId)
+```
+
+## 为什么需要两层 onClick？
+
+### 逐键 onClick（per-key）
+
+每个键可以设置独立的 `onClick`，用于该键的特殊行为：
+
+```tsx
+const keys: KeyConfig[] = Array.from({ length: 12 }, (_, i) => ({
+  onClick: () => playSound(octave, i),
+}))
+```
+
+### 顶层 onClick
+
+顶层 `onClick` 回调接收 `pianoKeyId`，始终触发。适合用于：
+- 跨八度的统一处理
+- 记录哪个八度的哪个键被点击
+
+```tsx
+<OctavePiano
+  keys={keys}
+  onClick={(pianoKeyId) => console.log(`第${octave}八度, key=${pianoKeyId}`)}
+/>
+```
+
+### 两者配合
+
+当多个八度并排时，逐键回调处理各自的逻辑（如发声），顶层回调处理全局逻辑（如 UI 高亮）：
+
+```tsx
+{[4, 5, 6].map((octave) => (
+  <OctavePiano
+    keys={buildKeys(octave)}
+    onClick={(pianoKeyId) => highlightKey(octave, pianoKeyId)}
+  />
+))}
+```
+
+## 日志说明
+
+上方的演示中，事件日志用颜色区分两种回调：
+
+- <span style={{color: '#3b82f6'}}>蓝色</span> — 逐键 `onClick`（`keys[pianoKeyId].onClick`）
+- <span style={{color: '#16a34a'}}>绿色</span> — 顶层 `onClick`（`props.onClick`）
+
+可以看到蓝色总是先于绿色出现。

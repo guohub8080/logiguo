@@ -1,0 +1,12 @@
+allowBuilds:
+  cn-font-split: true
+  esbuild: true
+  koffi: true
+  protobufjs: true
+  sharp: true
+
+# 沿用 museason 框架的扁平 node_modules 布局（纯 Web 下无副作用；改动需重装依赖）
+nodeLinker: hoisted
+
+overrides:
+  music12: link:../music12

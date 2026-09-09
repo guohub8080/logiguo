@@ -1,0 +1,38 @@
+export const title = "介绍与下载"
+
+# SGM-V2.01
+
+SGM-V2.01（Shan's GM SoundFont）是日本 SoundFont 制作者 Shan（David Shan）制作的一套 General MIDI 音色库，在日系音乐社区里非常流行，尤其受 RPG Maker 用户和东方 Project 同人音乐制作者欢迎。
+
+## 格式兼容性：是标准 MIDI
+
+SGM 完全符合 General MIDI（GM）标准规范。它能播任何 GM 标准 MIDI 文件，128 个标准乐器加鼓组一个不少。它也支持 Roland GS 扩展指令（bank select、variation 乐器等），所以 GS 格式的 MIDI 也能正确播放。
+
+换句话说，从"能不能播"的角度看，SGM 和 GeneralUser GS、FluidR3 没有区别——都是 GM/GS 兼容的 SoundFont，任何标准 MIDI 文件都能打开。
+
+## 那它特殊在哪？
+
+SGM 的特殊性在于"调音"——它不是面向"通用均衡"设计的，而是面向日本游戏音乐的听感审美设计的。
+
+日本游戏音乐（尤其是 90 年代到 2000 年代）的作曲家大多用 Roland SC-88 或 SC-88Pro 硬件音源做曲。SC-88 是日本游戏音乐行业的事实标准——很多 PS1 时代和 PC-98 时代的经典配乐，都是作曲家在 SC-88 上调出来的。这意味着这些 MIDI 文件的音色平衡、混响量、乐器搭配，都是针对 SC-88 的特定音色"染色"来写的。
+
+SGM 的调音方向就是模仿这种 Roland Sound Canvas 系列的音色特征：钢琴偏亮偏硬，弦乐偏高音区突出，合成器和铜管保留了那种 90 年代日式合成器的质感。它不是最精确的 SC-88 模拟，但它抓住了日系 MIDI 文件最需要的那个"味道"。
+
+对比来看：GeneralUser GS 走的是中性路线，FluidR3 走的是丰满扎实路线，而 SGM 走的是日系游戏风格路线。播同一首 MIDI 文件，三者出来的味道截然不同。
+
+## 基本参数
+
+作者 Shan（David Shan）从 2002 年开始制作，2007 年发布最终版 2.01。体积约 236 MB，包含 280 个 preset 和约 900 个采样，格式为标准 SF2，目标硬件是 Creative AWE32 声卡，免费许可。
+
+## 适用场景
+
+如果你要播放的是日系 RPG 配乐、动漫风格音乐、东方 Project 同人作品、RPG Maker 游戏的 MIDI——SGM 是最"对味"的选择之一。在 RPG Maker 社区里它是使用率最高的 SoundFont，大量社区 MIDI 作品默认就用 SGM 试听和调音。
+
+但如果你播的是欧美古典、爵士、或者只想要一个干净通用的默认音源，SGM 的染色反而可能显得偏亮或偏硬。
+
+## 下载
+
+- [Internet Archive（SF2，236MB）](https://archive.org/download/free-soundfonts-sf2-2019-04/SGM-V2.01.sf2)
+- [Polyphone SoundFont 库](https://www.polyphone.io/en/soundfonts/instrument-sets/256-sgm-v2-01)
+- [Musical Artifacts](https://musical-artifacts.com/artifacts/3506)
+- [GitHub Web 优化版（marmooo/free-soundfonts）](https://github.com/marmooo/free-soundfonts)

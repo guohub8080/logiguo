@@ -1,0 +1,116 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": [
+      "ES2020",
+      "DOM",
+      "DOM.Iterable"
+    ],
+    "allowJs": true,
+    "module": "ESNext",
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ],
+      "@dev/*": [
+        "./src/dev/*"
+      ],
+      "@apps/*": [
+        "./src/dev/apps/*"
+      ],
+      "@comps/*": [
+        "./src/dev/components/*"
+      ],
+      "@assets/*": [
+        "./src/dev/assets/*"
+      ],
+      "@utils/*": [
+        "./src/dev/utils/*"
+      ],
+      "@vite-dev/*": [
+        "./src/dev/utils/vite-dev/*"
+      ],
+      "@api/*": [
+        "./src/dev/api/*"
+      ],
+      "@styles/*": [
+        "./src/dev/styles/*"
+      ],
+      "@pub-html/*": [
+        "./src/dev/pubComponents/PureHTML/*"
+      ],
+      "@pub-svg/*": [
+        "./src/dev/pubComponents/SVG/*"
+      ],
+      "@sns/*": [
+        "./src/dev/pubComponents/SnsTemplate/*"
+      ],
+      "@pub-utils/*": [
+        "src/dev/pubUtils/*"
+      ],
+      "@svg-anim/*": [
+        "src/dev/pubUtils/genSvgAnimate/*"
+      ],
+      "@svg-set/*": [
+        "src/dev/pubUtils/genSvgAnimate/set/*"
+      ],
+      "@book-svg-doc/*": [
+        "./src/books/SvgDocument/*"
+      ],
+      "@book-svg-tool/*": [
+        "./src/books/SvgToolFunctions/*"
+      ],
+      "@shadcn/*": [
+        "./src/dev/shadcn/*"
+      ],
+      "@books/*": [
+        "./src/books/*"
+      ],
+      "@articles/*": [
+        "./src/articles/*"
+      ],
+      "@music12doc/*": [
+        "./src/books/Music12Document/*"
+      ],
+      "@mdx/*": [
+        "./src/dev/components/mdx/*"
+      ],
+      "@book-comps/*": [
+        "./src/dev/components/bookComponents/*"
+      ],
+      "@music-comps/*": [
+        "./src/dev/components/musicComps/*"
+      ],
+      "@pubHTML/*": [
+        "./src/dev/pubComponents/PureHTML/*"
+      ],
+      "@pubSVG/*": [
+        "./src/dev/pubComponents/SVG/*"
+      ],
+      "@pubUtils/*": [
+        "./src/dev/pubComponents/PubUtils/*"
+      ]
+    },
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "strict": false,
+    /* Linting */
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitThis": false,
+    "allowSyntheticDefaultImports": true
+  },
+  "include": [
+    "src"
+  ]
+}
+

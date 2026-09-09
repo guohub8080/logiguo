@@ -1,0 +1,23 @@
+export const title = "SoundFont 是什么"
+
+# SoundFont 是什么
+
+**SoundFont**（缩写 **SF2**）是 E-mu Systems 于 1991 年开发的采样合成音频格式，由 Creative Labs 注册为商标。它是最广泛使用的软件合成器采样格式之一，至今仍是许多 MIDI 播放器和 DAW 的默认音源格式。
+
+## 基本原理
+
+SoundFont 文件本质上是一个**采样音色库**——它存储了真实乐器录制的音频片段（采样），以及如何在这些采样之间回放的指令。
+
+整个文件由三层结构组成。最底层是**采样（Sample）**，即录音的原始波形数据（PCM）。中间层是**乐器（Instrument）**，它把多个采样按音高、力度区间映射到键盘上。最上层是**预设（Preset）**，即用户可选择的音色（如"Grand Piano"），引用一个或多个乐器。三者关系是 `Preset → Instrument → Sample`。
+
+## 为什么选 SoundFont
+
+SoundFont 是一个开放格式，规范公开，有大量免费和收费的音色库可选。它的体积可控——同一个乐器可录 5 个采样也可录 50 个，按需平衡体积和质量。兼容性很强，几乎所有软合成器都支持（FluidSynth、SpessaSynth、BASSMIDI 等）。因为基于真实录音，它的音色比纯合成器更自然。
+
+## SF2 vs SF3
+
+SF2 是原始 PCM 未压缩格式，体积较大。SF3 是 MuseScore 推广的格式，用 Ogg Vorbis 压缩采样，体积约为 SF2 的四分之一。两者的数据结构完全相同，只是采样数据的编码方式不同，播放时 SF3 会先解码还原成 PCM。
+
+## 在 Guookcase 中的应用
+
+本项目使用 [SpessaSynth](https://github.com/spessasus/SpessaSynth) 作为实时合成引擎，加载精简后的 GeneralUser GS 音色库——从 287 个预设裁剪到 26 个，体积从 8MB 压缩到 2.4MB。

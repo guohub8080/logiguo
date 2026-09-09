@@ -2,106 +2,265 @@
 <html lang="zh-CN">
 <head>
 	<meta charset="UTF-8"/>
+	<link rel="icon" type="image/svg+xml" href="/src/dev/assets/svgs/logoSvg/favicon.svg"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-	<meta name="referrer" content="no-referrer"/>
+	<meta name="referrer" content="no-referrer">
 	<title>LogiGuo · 逻辑郭</title>
 	<style>
-		:root {
-			color-scheme: light dark;
-		}
-
-		* {
-			margin: 0;
-			padding: 0;
-			box-sizing: border-box;
-		}
-
-		body {
-			min-height: 100vh;
-			min-height: 100dvh;
+		.tmp-loading-wrapper {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100vw;
+			height: 100vh;
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
 			background: linear-gradient(180deg, #f5f7fa 0%, #c3cfe2 100%);
-			/* 安全区：竖屏吸收上下 inset，横屏吸收左右 */
-			padding-top: constant(safe-area-inset-top);
-			padding-top: env(safe-area-inset-top);
-			padding-bottom: constant(safe-area-inset-bottom);
-			padding-bottom: env(safe-area-inset-bottom);
-			padding-left: constant(safe-area-inset-left);
-			padding-left: env(safe-area-inset-left);
-			padding-right: constant(safe-area-inset-right);
-			padding-right: env(safe-area-inset-right);
+			z-index: -1;
 		}
 
-		@media (prefers-color-scheme: dark) {
-			body {
-				background: linear-gradient(180deg, #10141c 0%, #1c2333 100%);
-			}
-
-			.title {
-				color: #7fb3f0;
-			}
-
-			.subtitle,
-			.status {
-				color: rgba(235, 240, 250, 0.55);
-			}
-		}
-
-		main {
+		.tmp-loading-inner {
 			text-align: center;
-			padding: 24px;
+			animation: tmp-loading-fadeIn 0.6s ease-out;
 		}
 
-		.title {
-			font-size: clamp(40px, 10vw, 72px);
-			font-weight: 800;
-			letter-spacing: -0.02em;
+		.tmp-loading-icon {
+			width: 88px;
+			height: 88px;
+			margin: 0 auto 16px;
+			animation: tmp-loading-float 3s ease-in-out infinite;
+		}
+
+		.tmp-loading-text-logo {
+			width: 180px;
+			height: 41px;
+			margin: 0 auto;
+		}
+
+		.tmp-loading-dots {
+			display: flex;
+			gap: 8px;
+			justify-content: center;
+			margin-top: 24px;
+		}
+
+		.tmp-loading-dot {
+			width: 8px;
+			height: 8px;
+			background: rgba(0, 0, 0, 0.5);
+			border-radius: 50%;
+			animation: tmp-loading-bounce 1.4s infinite ease-in-out;
+		}
+
+		.tmp-loading-dot:nth-child(1) { animation-delay: 0s; }
+		.tmp-loading-dot:nth-child(2) { animation-delay: 0.2s; }
+		.tmp-loading-dot:nth-child(3) { animation-delay: 0.4s; }
+
+		.tmp-loading-mirror-box {
+			opacity: 0;
+			animation: tmp-loading-fadeInUp 0.5s ease-out forwards;
+			margin: 32px auto 0;
+			padding: 22px 22px 20px;
+			display: flex;
+			flex-direction: column;
+			align-items: stretch;
+			gap: 14px;
+			width: calc(100% - 32px);
+			max-width: 640px;
+			box-sizing: border-box;
+		}
+
+		.tmp-loading-mirror-label {
+			font-size: 11px;
+			color: rgba(0, 0, 0, 0.4);
+			font-weight: 600;
+			letter-spacing: 1.2px;
+			text-transform: uppercase;
+			text-align: center;
+		}
+
+		.tmp-loading-mirror-grid {
+			display: flex;
+			flex-direction: row;
+			flex-wrap: wrap;
+			justify-content: center;
+			gap: 8px;
+			width: 100%;
+		}
+
+		.tmp-loading-mirror-item {
+			flex: 0 1 240px;
+			display: flex;
+			align-items: center;
+			gap: 16px;
+			padding: 10px 14px;
+			border-radius: 10px;
+			background: rgba(255, 255, 255, 0.55);
+			border: 1px solid rgba(0, 0, 0, 0.12);
+			transition: all 0.2s ease;
+			cursor: pointer;
+			min-width: 0;
+			box-sizing: border-box;
+		}
+
+		.tmp-loading-mirror-item:hover {
+			background: rgba(255, 255, 255, 0.95);
+			border-color: rgba(25, 118, 210, 0.5);
+			box-shadow: 0 6px 20px rgba(25, 118, 210, 0.3), 0 2px 6px rgba(25, 118, 210, 0.18);
+			transform: translateY(-1px);
+		}
+
+		.tmp-loading-mirror-icon {
+			width: 24px;
+			height: 24px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-shrink: 0;
+		}
+
+		.tmp-loading-mirror-icon svg {
+			display: block;
+		}
+
+		.tmp-loading-mirror-info {
+			display: flex;
+			flex-direction: column;
+			gap: 3px;
+			min-width: 0;
+			flex: 1;
+			text-align: left;
+		}
+
+		.tmp-loading-mirror-platform {
+			font-size: 14px;
+			font-weight: 700;
+			color: rgba(0, 0, 0, 0.78);
+			line-height: 1.2;
+			letter-spacing: 0.2px;
+		}
+
+		.tmp-loading-mirror-url {
+			font-size: 12px;
 			color: #1976D2;
+			font-weight: 500;
+			line-height: 1.2;
+			font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
 		}
 
-		.dot {
-			display: inline-block;
-			width: 0.16em;
-			height: 0.16em;
-			margin: 0 0.18em;
-			border-radius: 9999px;
-			background: #FFA726;
-			vertical-align: baseline;
+		@keyframes tmp-loading-float {
+			0%, 100% { transform: translateY(0px); }
+			50% { transform: translateY(-10px); }
 		}
 
-		.subtitle {
-			margin-top: 14px;
-			font-size: 16px;
-			letter-spacing: 0.35em;
-			text-indent: 0.35em;
-			color: rgba(30, 40, 60, 0.55);
+		@keyframes tmp-loading-bounce {
+			0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
+			40% { transform: scale(1.2); opacity: 1; }
 		}
 
-		.status {
-			margin-top: 42px;
-			font-size: 13px;
-			color: rgba(30, 40, 60, 0.45);
+		@keyframes tmp-loading-fadeIn {
+			from { opacity: 0; transform: translateY(20px); }
+			to { opacity: 1; transform: translateY(0); }
 		}
 
-		.status .bar {
-			display: inline-block;
-			vertical-align: middle;
-			width: 28px;
-			height: 3px;
-			margin: 0 12px;
-			border-radius: 9999px;
-			background: #FFA726;
+		@keyframes tmp-loading-fadeInUp {
+			from { opacity: 0; transform: translateY(10px); }
+			to { opacity: 1; transform: translateY(0); }
 		}
 	</style>
+	<script type="module" src="/src/dev/main.tsx"></script>
 </head>
 <body>
-	<main>
-		<h1 class="title">Logi<span class="dot" aria-hidden="true"></span>Guo</h1>
-		<p class="subtitle">逻辑郭</p>
-		<p class="status"><span class="bar" aria-hidden="true"></span>建设中 · Coming soon<span class="bar" aria-hidden="true"></span></p>
-	</main>
+
+<div id="root">
+	<div class="tmp-loading-wrapper">
+		<div class="tmp-loading-inner">
+				<div class="tmp-loading-icon">
+					<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 596 597">
+						<path fill="#fff" d="M297.6,20.3L51.6,162.3L51.6,446.4L297.6,588.4L543.6,446.4L543.6,162.3L297.6,20.3Z"/>
+						<path fill="#1976D2" d="M106.3,225.4L106.3,414.8L270.3,509.5L270.3,320.1L106.3,225.4ZM243,51.8L297.7,20.2L543.7,162.2L543.7,193.8L325,320.1L325,509.5L489,414.8L489,351.7L379.7,414.8L379.7,351.7L543.7,257L543.7,446.4L297.7,588.4L51.6,446.4L51.6,162.3L78.9,146.5L297.6,272.8L461.6,178.1L243,51.8Z"/>
+						<polygon fill="#FFA726" points="79 146.5 297.6 20.3 297.6 272.8 79 146.5"/>
+					</svg>
+				</div>
+			<div class="tmp-loading-text-logo">
+				<!-- LOGIGUO 字标（设计稿：src/dev/assets/svgs/logoSvg/logiguo.svg） -->
+				<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1474 342">
+					<g fill="#1976D2">
+						<path d="M72.9,245.7h111.3l-8.7,50.8H7L48.1,57.5h57.2l-32.4,188.2Z"/>
+						<path d="M291.6,300.8c-23.6,0-43.1-4.9-58.6-14.8-15.5-9.9-26.4-24.1-32.5-42.7-6.1-18.6-7-40.6-2.6-66.3,4.4-25.6,12.9-47.7,25.4-66.3,12.5-18.6,28.2-32.8,47.2-42.7,18.9-9.9,40.2-14.8,63.7-14.8s43.1,4.9,58.6,14.8c15.5,9.9,26.3,24.1,32.5,42.7,6.1,18.6,7,40.6,2.6,66.3-4.4,25.6-12.9,47.7-25.4,66.3-12.5,18.6-28.2,32.8-47.2,42.7-18.9,9.9-40.2,14.8-63.7,14.8Z"/>
+						<path d="M574.9,105.9c-12.5,0-23.8,2.7-34,8-10.1,5.3-18.7,13.4-25.7,24.1-7,10.7-11.8,23.7-14.4,39-2.7,15.5-2.5,28.6.5,39.2,3,10.6,8.5,18.6,16.6,23.9,8.1,5.3,18.3,8,30.6,8s16.5-1.2,23.5-3.6c7.1-2.4,14.1-6.7,21.1-12.7l4.1-23.9h-43.1l8.8-51.1h96.9l-17.4,101.1c-14.8,14.7-30.9,25.6-48.2,32.5-17.3,7-35.6,10.4-54.8,10.4s-43.4-5-59.5-15c-16.1-10-27.5-24.3-34.2-42.8-6.6-18.6-7.8-40.5-3.4-66,4.4-25.4,13.2-47.4,26.4-66,13.2-18.6,29.8-32.8,49.6-42.8,19.9-10,41.7-15,65.5-15s39.8,4.1,53.7,12.4c13.8,8.3,23.5,20.4,29,36.3l-50.4,30.3c-3.1-8.1-8.4-14.5-15.8-19.2-7.4-4.7-15.9-7.1-25.5-7.1Z"/>
+						<path d="M720.1,296.5h-55.4l29.4-170.9h55.4l-29.4,170.9Z"/>
+						<path d="M896.5,105.9c-12.5,0-23.8,2.7-34,8-10.1,5.3-18.7,13.4-25.7,24.1-7,10.7-11.8,23.7-14.4,39-2.7,15.5-2.5,28.6.5,39.2,3,10.6,8.5,18.6,16.6,23.9,8.1,5.3,18.3,8,30.6,8s16.5-1.2,23.5-3.6c7.1-2.4,14.1-6.7,21.1-12.7l4.1-23.9h-43.1l8.8-51.1h96.9l-17.4,101.1c-14.8,14.7-30.9,25.6-48.2,32.5-17.3,7-35.6,10.4-54.8,10.4s-43.4-5-59.5-15c-16.1-10-27.5-24.3-34.2-42.8-6.6-18.6-7.8-40.5-3.4-66,4.4-25.4,13.2-47.4,26.4-66,13.2-18.6,29.8-32.8,49.6-42.8,19.9-10,41.7-15,65.5-15s39.8,4.1,53.7,12.4c13.8,8.3,23.5,20.4,29,36.3l-50.4,30.3c-3.1-8.1-8.4-14.5-15.8-19.2-7.4-4.7-15.9-7.1-25.5-7.1Z"/>
+						<path d="M1094.7,248.1c13.7,0,25-3.9,33.8-11.6,8.8-7.8,14.6-19.5,17.3-35.2l24.7-143.7h57.2l-25.1,145.8c-3.5,20.6-10.6,38.2-21.2,52.8-10.6,14.6-24.1,25.7-40.5,33.3-16.4,7.6-34.8,11.3-55.3,11.3s-37.6-3.8-51.4-11.3c-13.8-7.6-23.4-18.7-29-33.3-5.6-14.6-6.6-32.2-3.1-52.8l25.1-145.8h57.2l-24.5,142.5c-2.8,16.1-1.1,28.2,5.2,36.2,6.2,8,16.1,12,29.6,12Z"/>
+						<path d="M1324,300.8c-23.6,0-43.1-4.9-58.6-14.8-15.5-9.9-26.4-24.1-32.5-42.7-6.1-18.6-7-40.6-2.6-66.3,4.4-25.6,12.9-47.7,25.4-66.3,12.5-18.6,28.2-32.8,47.2-42.7,18.9-9.9,40.2-14.8,63.7-14.8s43.1,4.9,58.6,14.8c15.5,9.9,26.3,24.1,32.5,42.7,6.1,18.6,7,40.6,2.6,66.3-4.4,25.6-12.9,47.7-25.4,66.3-12.5,18.6-28.2,32.8-47.2,42.7-18.9,9.9-40.2,14.8-63.7,14.8Z"/>
+					</g>
+					<g fill="#FFA726">
+						<path d="M762.7,76c-1.7,9.7-5.9,17.4-12.7,23.1-6.8,5.7-15.3,8.6-25.3,8.6s-17.1-2.9-21.9-8.6c-4.8-5.7-6.3-13.5-4.6-23.1,1.7-9.7,5.9-17.4,12.6-23.1,6.7-5.7,15-8.6,24.9-8.6s17.5,2.9,22.3,8.6c4.9,5.7,6.4,13.5,4.8,23.1Z"/>
+						<path d="M300.7,248.1c11.5,0,22-2.8,31.4-8.3,9.5-5.5,17.4-13.7,23.9-24.4,6.5-10.7,11-23.5,13.5-38.4,2.6-14.9,2.5-27.7-.3-38.4-2.8-10.7-7.9-18.8-15.5-24.4-7.6-5.5-17.1-8.3-28.6-8.3s-22,2.8-31.4,8.3c-9.5,5.6-17.4,13.7-23.9,24.4-6.5,10.7-11,23.5-13.5,38.4-2.6,14.9-2.5,27.7.3,38.4,2.8,10.7,7.9,18.8,15.5,24.4,7.5,5.5,17.1,8.3,28.6,8.3Z"/>
+						<path d="M1333,248.1c11.5,0,22-2.8,31.4-8.3,9.5-5.5,17.4-13.7,23.9-24.4,6.5-10.7,11-23.5,13.5-38.4,2.6-14.9,2.5-27.7-.3-38.4-2.8-10.7-7.9-18.8-15.5-24.4-7.6-5.5-17.1-8.3-28.6-8.3s-22,2.8-31.4,8.3c-9.5,5.6-17.4,13.7-23.9,24.4-6.5,10.7-11,23.5-13.5,38.4-2.6,14.9-2.5,27.7.3,38.4,2.8,10.7,7.9,18.8,15.5,24.4,7.5,5.5,17.1,8.3,28.6,8.3Z"/>
+					</g>
+				</svg>
+			</div>
+			<div class="tmp-loading-dots">
+				<div class="tmp-loading-dot"></div>
+				<div class="tmp-loading-dot"></div>
+				<div class="tmp-loading-dot"></div>
+			</div>
+			<div class="tmp-loading-mirror-box">
+				<div class="tmp-loading-mirror-label">加载较慢？尝试以下镜像</div>
+				<div class="tmp-loading-mirror-grid">
+					<div class="tmp-loading-mirror-item" onclick="window.open('https://guohub8080.github.io/logiguo/','_blank','noopener')">
+						<div class="tmp-loading-mirror-icon">
+							<svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+								<path fill="#181717" d="M12 .297c-6.63 0-12 5.373-12 12c0 5.303 3.438 9.8 8.205 11.385c.6.113.82-.258.82-.577c0-.285-.01-1.04-.015-2.04c-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729c1.205.084 1.838 1.236 1.838 1.236c1.07 1.835 2.809 1.305 3.495.998c.108-.776.417-1.305.76-1.605c-2.665-.3-5.466-1.332-5.466-5.93c0-1.31.465-2.38 1.235-3.22c-.135-.303-.54-1.523.105-3.176c0 0 1.005-.322 3.3 1.23c.96-.267 1.98-.4 3-.405c1.02.005 2.04.138 3 .405c2.28-1.552 3.285-1.23 3.285-1.23c.645 1.653.24 2.873.12 3.176c.765.84 1.23 1.91 1.23 3.22c0 4.61-2.805 5.625-5.475 5.92c.42.36.81 1.096.81 2.22c0 1.606-.015 2.896-.015 3.286c0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+							</svg>
+						</div>
+						<div class="tmp-loading-mirror-info">
+							<div class="tmp-loading-mirror-platform">GitHub Pages</div>
+							<div class="tmp-loading-mirror-url">guohub8080/logiguo</div>
+						</div>
+					</div>
+					<div class="tmp-loading-mirror-item" onclick="window.open('https://logiguo.pages.dev','_blank','noopener')">
+						<div class="tmp-loading-mirror-icon">
+							<svg width="24" height="24" viewBox="0 0 128 128" fill="none">
+								<path fill="#f38020" d="M87.295 89.022c.763-2.617.472-5.015-.8-6.796c-1.163-1.635-3.125-2.58-5.488-2.689l-44.737-.581c-.291 0-.545-.145-.691-.363s-.182-.509-.109-.8c.145-.436.581-.763 1.054-.8l45.137-.581c5.342-.254 11.157-4.579 13.192-9.885l2.58-6.723c.109-.291.145-.581.073-.872c-2.906-13.158-14.644-22.97-28.672-22.97c-12.938 0-23.913 8.359-27.838 19.952a13.35 13.35 0 0 0-9.267-2.58c-6.215.618-11.193 5.597-11.811 11.811c-.145 1.599-.036 3.162.327 4.615C10.104 70.051 2 78.337 2 88.549c0 .909.073 1.817.182 2.726a.895.895 0 0 0 .872.763h82.57c.472 0 .909-.327 1.054-.8z"/>
+								<path fill="#faae40" d="M101.542 60.275c-.4 0-.836 0-1.236.036c-.291 0-.545.218-.654.509l-1.744 6.069c-.763 2.617-.472 5.015.8 6.796c1.163 1.635 3.125 2.58 5.488 2.689l9.522.581c.291 0 .545.145.691.363s.182.545.109.8c-.145.436-.581.763-1.054.8l-9.924.582c-5.379.254-11.157 4.579-13.192 9.885l-.727 1.853c-.145.363.109.727.509.727h34.089c.4 0 .763-.254.872-.654c.581-2.108.909-4.325.909-6.614c0-13.447-10.975-24.422-24.458-24.422"/>
+							</svg>
+						</div>
+						<div class="tmp-loading-mirror-info">
+							<div class="tmp-loading-mirror-platform">Cloudflare Pages</div>
+							<div class="tmp-loading-mirror-url">logiguo.pages.dev</div>
+						</div>
+					</div>
+					<div class="tmp-loading-mirror-item" onclick="window.open('https://logiguo.netlify.app','_blank','noopener')">
+						<div class="tmp-loading-mirror-icon">
+							<svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+								<path fill="#00bfa5" d="m11.25 2.232l-.127.127v4.567l.127.129h1.526l.126-.13V2.36l-.126-.127H11.25zM6.69 5.455L5.643 6.5v.21l1.6 1.6h1.108l.148-.148V7.055l-1.6-1.6zM1.026 11.11l-.127.127v1.528l.127.127h6.09l.127-.127v-1.528l-.127-.127zm15.858 0l-.127.127v1.528l.127.127h6.09l.127-.127v-1.528l-.127-.127zm-9.64 4.58l-1.6 1.6v.21l1.045 1.046h.21l1.6-1.6v-1.109l-.148-.146zm4.005 1.256l-.127.13v4.566l.127.127h1.526l.126-.127v-4.567l-.126-.129z"/>
+								<path fill="#00897b" d="M14.855 15.172h-1.523l-.127-.127V11.48c0-.634-.249-1.125-1.013-1.142c-.394-.01-.844 0-1.325.019l-.072.074v4.61l-.127.128H9.146l-.128-.127V8.956l.128-.127h3.425a2.41 2.41 0 0 1 2.41 2.41v3.806z"/>
+							</svg>
+						</div>
+						<div class="tmp-loading-mirror-info">
+							<div class="tmp-loading-mirror-platform">Netlify</div>
+							<div class="tmp-loading-mirror-url">logiguo.netlify.app</div>
+						</div>
+					</div>
+					<div class="tmp-loading-mirror-item" onclick="window.open('https://logiguo.vercel.app','_blank','noopener')">
+						<div class="tmp-loading-mirror-icon">
+							<svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+								<path fill="#000" d="M23 21.648H1L12 2.352z"/>
+							</svg>
+						</div>
+						<div class="tmp-loading-mirror-info">
+							<div class="tmp-loading-mirror-platform">Vercel</div>
+							<div class="tmp-loading-mirror-url">logiguo.vercel.app</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
 </body>
 </html>

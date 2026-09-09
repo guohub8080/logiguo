@@ -1,0 +1,319 @@
+import path from "path"
+import fs from "fs"
+import { defineConfig, Plugin } from 'vite'
+import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
+import terser from '@rollup/plugin-terser'
+import mdx from '@mdx-js/rollup'
+import remarkGfm from 'remark-gfm'
+import { viteSingleFile } from 'vite-plugin-singlefile'
+
+const isProduction = process.env.NODE_ENV === 'production';
+const isGitHubPages = process.env.GITHUB_PAGES === 'true';
+const isSingleFile = process.env.SINGLE_FILE === 'true';
+
+// 单文件模式后处理：把 HTML 里所有外部 SVG/PNG/JPG 引用替换为 base64 data URI，并删除外部文件
+function postInlineAssetsPlugin(): Plugin {
+  return {
+    name: 'post-inline-assets',
+    enforce: 'post',
+    apply: 'build',
+    closeBundle() {
+      const distDir = path.resolve(__dirname, 'dist-pkg')
+      const htmlPath = path.join(distDir, 'index.html')
+      if (!fs.existsSync(htmlPath)) return
+
+      let html = fs.readFileSync(htmlPath, 'utf-8')
+
+      // 单文件模式：移除对 fonts/fonts.css 的 <link> 引用。
+      // 该文件在源码 index.html 中被硬编码引入，但 fonts/ 目录实际不存在（死链），
+      // 且 removeFontFacesPlugin 已删除所有 @font-face，单文件产物不需要外部字体。
+      // 不清理的话，双击打开（file://）会因找不到 fonts.css 而报错。
+      if (/<link[^>]+href=["']\.?\/?fonts\/fonts\.css["'][^>]*>/i.test(html)) {
+        html = html.replace(/<link[^>]+href=["']\.?\/?fonts\/fonts\.css["'][^>]*>\s*/gi, '')
+        console.log('[post-inline] removed dead link: fonts/fonts.css')
+      }
+
+      const assetsDir = path.join(distDir, 'assets')
+      if (!fs.existsSync(assetsDir)) {
+        fs.writeFileSync(htmlPath, html)
+        return
+      }
+
+      const replacedFiles = new Set<string>()
+      const mimeMap: Record<string, string> = {
+        '.svg': 'image/svg+xml',
+        '.png': 'image/png',
+        '.jpg': 'image/jpeg',
+        '.jpeg': 'image/jpeg',
+        '.gif': 'image/gif',
+        '.webp': 'image/webp',
+        '.ico': 'image/x-icon',
+      }
+
+      const walk = (dir: string) => {
+        for (const name of fs.readdirSync(dir)) {
+          const full = path.join(dir, name)
+          const stat = fs.statSync(full)
+          if (stat.isDirectory()) {
+            walk(full)
+            continue
+          }
+          const ext = path.extname(name).toLowerCase()
+          const rel = path.relative(distDir, full).replace(/\\/g, '/')
+          // 单文件模式：跳过字体文件（woff2/ttf/woff/eot），太大且不内联
+          if (['.woff2', '.woff', '.ttf', '.eot'].includes(ext)) {
+            console.log(`[post-inline] skip font: ${rel}`)
+            continue
+          }
+          const mime = mimeMap[ext]
+          if (!mime) continue
+          const content = fs.readFileSync(full)
+          const dataUri = `data:${mime};base64,${content.toString('base64')}`
+          // 匹配 ./rel、/rel、rel 三种写法
+          const escaped = rel.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+          const re = new RegExp(`(["'\\(])\\.?/?${escaped}(["'\\)])`, 'g')
+          const before = html
+          html = html.replace(re, `$1${dataUri}$2`)
+          if (before !== html) {
+            replacedFiles.add(full)
+            console.log(`[post-inline] replaced: ${rel} (${(content.length / 1024).toFixed(1)} KB)`)
+          }
+        }
+      }
+      walk(assetsDir)
+
+      // 删除 HTML 中所有内联的 woff2 字体 base64（避免单文件体积爆炸）
+      const fontRegex = /url\(data:font\/woff2;base64,[A-Za-z0-9+/=]+\)/g
+      const fontMatches = html.match(fontRegex)
+      if (fontMatches) {
+        console.log(`[post-inline] removed ${fontMatches.length} inline woff2 fonts from HTML`)
+        html = html.replace(fontRegex, 'url()')
+      }
+
+      fs.writeFileSync(htmlPath, html)
+
+      // 删除 fonts/ 目录：源码 index.html 引用的 ./fonts/fonts.css 是死链（fonts/ 不存在），
+      // vite build 仍会创建一个空的 fonts/ 占位目录，单文件模式下无意义，直接删除。
+      const fontsDir = path.join(distDir, 'fonts')
+      if (fs.existsSync(fontsDir)) {
+        try {
+          fs.rmSync(fontsDir, { recursive: true, force: true })
+          console.log('[post-inline] removed dead dir: fonts/')
+        } catch { /* ignore */ }
+      }
+
+      // 删除已经被内联的外部资源文件
+      for (const f of replacedFiles) {
+        try { fs.unlinkSync(f) } catch { /* ignore */ }
+      }
+      // 清理空目录：所有路径锚定在 assetsDir 内并校验边界（防路径穿越）；
+      // lstat 不跟随符号链接，避免经链接递归到产物目录之外
+      const assetsRoot = path.resolve(assetsDir)
+      const isInsideAssets = (p: string) => {
+        const resolved = path.resolve(p)
+        return resolved === assetsRoot || resolved.startsWith(assetsRoot + path.sep)
+      }
+      const cleanEmpty = (dir: string) => {
+        if (!isInsideAssets(dir)) return
+        if (!fs.existsSync(dir)) return
+        for (const name of fs.readdirSync(dir)) {
+          const full = path.join(dir, name)
+          if (!isInsideAssets(full)) continue
+          if (fs.lstatSync(full).isDirectory()) cleanEmpty(full)
+        }
+        try {
+          if (fs.readdirSync(dir).length === 0) fs.rmdirSync(dir)
+        } catch { /* ignore */ }
+      }
+      cleanEmpty(assetsDir)
+    },
+  }
+}
+
+// 单文件模式下：删除 CSS 中所有 @font-face 规则，避免字体文件被 base64 内联进 HTML
+function removeFontFacesPlugin(): Plugin {
+  return {
+    name: 'remove-font-faces',
+    enforce: 'post',
+    transform(code, id) {
+      if (!id.endsWith('.css')) return null
+      const cleaned = code.replace(/@font-face\s*\{[^}]*\}/gs, '')
+      const removed = (code.match(/@font-face\s*\{/g) || []).length
+      if (removed > 0) {
+        console.log(`[remove-font-faces] ${id}: removed ${removed} @font-face rules`)
+      }
+      return { code: cleaned, map: null }
+    },
+  }
+}
+
+// 单文件模式下：拦截所有 SVG import，强制返回 base64 data URI（避免成为外部文件后被丢失）
+function inlineSvgPlugin(): Plugin {
+  let count = 0
+  return {
+    name: 'inline-svg-as-data-uri',
+    enforce: 'pre',
+    resolveId(source, importer) {
+      if (source.endsWith('.svg')) {
+        // 让 vite 正常解析路径，但保留 raw query 让我们能拦截
+        return null
+      }
+      return null
+    },
+    transform(_code, id) {
+      const cleanId = id.split('?')[0]
+      if (!cleanId.endsWith('.svg')) return null
+      try {
+        const svg = fs.readFileSync(cleanId)
+        const base64 = svg.toString('base64')
+        const dataUri = `data:image/svg+xml;base64,${base64}`
+        count++
+        console.log(`[inline-svg] #${count}: ${path.relative(process.cwd(), cleanId)}`)
+        return {
+          code: `export default ${JSON.stringify(dataUri)}`,
+          map: null,
+        }
+      } catch (e) {
+        console.warn(`[inline-svg] failed: ${cleanId}`, e)
+        return null
+      }
+    },
+  }
+}
+
+// https://vitejs.dev/config/
+
+// https://vitejs.dev/config/
+export default defineConfig({
+  // 统一使用相对路径，兼容所有部署平台（GitHub Pages、Cloudflare、Netlify、Vercel）
+  // 无论部署到子路径还是根域名，资源引用都能正确解析
+  // GitHub Pages 子路径模式用绝对路径
+  base: isGitHubPages ? '/logiguo/' : './',
+  plugins: [
+    isSingleFile && removeFontFacesPlugin(),
+    isSingleFile && inlineSvgPlugin(),
+    react(),
+    tailwindcss(),
+    mdx({
+      // MDX 配置选项
+      remarkPlugins: [remarkGfm], // 支持 GitHub Flavored Markdown (表格、删除线等)
+      rehypePlugins: [],
+      // 指定MDX组件映射
+      providerImportSource: '@mdx-js/react',
+      // 支持 TSX 文件
+      include: ['**/*.{md,mdx,tsx}'],
+    }),
+    isProduction && terser(), // 只在生产环境下使用 terser 压缩
+    isSingleFile && viteSingleFile({
+      // 只内联 JS 和 CSS，图片字体等资源保留为外部文件
+      inlinePattern: ['**/*.css', '**/*.js'],
+    }),
+    isSingleFile && postInlineAssetsPlugin(),
+  ],
+  // Worker 配置
+  worker: {
+    format: 'es',
+  },
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
+      "@dev": path.resolve(__dirname, "./src/dev"),
+      "@comps": path.resolve(__dirname, "./src/dev/components"),
+      "@apps": path.resolve(__dirname, "./src/dev/apps"),
+      "@styles": path.resolve(__dirname, "./src/dev/styles"),
+      "@assets": path.resolve(__dirname, "./src/dev/assets"),
+      "@utils": path.resolve(__dirname, "./src/dev/utils"),
+      "@vite-dev": path.resolve(__dirname, "./src/dev/utils/vite-dev"),
+      "@api": path.resolve(__dirname, "./src/dev/api"),
+      "@pub-html": path.resolve(__dirname, "./src/dev/pubComponents/PureHTML"),
+      "@pub-svg": path.resolve(__dirname, "./src/dev/pubComponents/SVG"),
+      "@sns": path.resolve(__dirname, "./src/dev/pubComponents/SnsTemplate"),
+      "@pub-utils": path.resolve(__dirname, "./src/dev/pubUtils"),
+      "@svg-anim": path.resolve(__dirname, "./src/dev/pubUtils/genSvgAnimate"),
+      "@svg-set": path.resolve(__dirname, "./src/dev/pubUtils/genSvgAnimate/set"),
+      "@book-svg-tool": path.resolve(__dirname, "./src/books/SvgToolFunctions"),
+      "@shadcn": path.resolve(__dirname, "./src/dev/shadcn"),
+      "@books": path.resolve(__dirname, "./src/books"),
+      "@articles": path.resolve(__dirname, "./src/articles"),
+      "@mdx": path.resolve(__dirname, "./src/dev/components/mdx"),
+      "@book-comps": path.resolve(__dirname, "./src/dev/components/bookComponents"),
+      "@music-comps": path.resolve(__dirname, "./src/dev/components/musicComps"),
+      "@music12doc": path.resolve(__dirname, "./src/books/Music12Document"),
+      "@pubHTML": path.resolve(__dirname, "./src/dev/pubComponents/PureHTML"),
+      "@pubSVG": path.resolve(__dirname, "./src/dev/pubComponents/SVG"),
+      "@pubUtils": path.resolve(__dirname, "./src/dev/pubComponents/PubUtils"),
+      path: "path-browserify",
+    },
+    extensions: [".ts", ".tsx", ".js", ".jsx", ".mdx", ".md"]
+  },
+
+  // 开发环境配置
+  server: {
+    // 固定端口：避免 vite 自动顺延（5173→5174→...）导致 cloudflared/书签/文档里的 URL 失效
+    // strictPort: 端口被占直接报错，配合 dev 脚本里的 lsof 强杀，保证始终是 5180
+    port: 6767,
+    strictPort: true,
+    host: true, // 允许局域网访问（手机同 WiFi 测试 + cloudflared tunnel）
+    // 允许通过 cloudflared tunnel 绑定的域名访问（Vite 默认只允许 localhost，会 403）
+    allowedHosts: ['dev.guohub.top'],
+    proxy: {
+      // 代理微信图片
+      '/api/wechat-img': {
+        target: 'https://mmbiz.qpic.cn',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/wechat-img/, ''),
+        configure: (proxy, options) => {
+          proxy.on('proxyReq', (proxyReq, req, res) => {
+            // 移除所有可能暴露来源的请求头
+            proxyReq.removeHeader('referer');
+            proxyReq.removeHeader('origin');
+            proxyReq.removeHeader('host');
+            // 设置伪装请求头，模拟微信客户端
+            proxyReq.setHeader('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
+            proxyReq.setHeader('Accept', 'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8');
+            proxyReq.setHeader('Accept-Encoding', 'gzip, deflate, br');
+            proxyReq.setHeader('Accept-Language', 'zh-CN,zh;q=0.9,en;q=0.8');
+            // 添加微信相关的 header
+            proxyReq.setHeader('Sec-Fetch-Dest', 'image');
+            proxyReq.setHeader('Sec-Fetch-Mode', 'no-cors');
+            proxyReq.setHeader('Sec-Fetch-Site', 'cross-site');
+          });
+        }
+      }
+    }
+  },
+
+  build: {
+    outDir: isSingleFile ? "dist-pkg" : "docs",
+    minify: isProduction,
+    // 单文件模式：用函数强制内联所有资源（包括 SVG，覆盖 Vite 默认排除 SVG 的行为）
+    assetsInlineLimit: isSingleFile
+      ? function (filePath, content) { return content.length < 100 * 1024 }
+      : 4096,
+    rollupOptions: {
+      output: {
+        chunkFileNames: 'assets/js/[name]-[hash].js',
+        entryFileNames: 'assets/js/[name]-[hash].js',
+        assetFileNames: 'assets/[ext]/[name]-[hash][extname]',
+
+        // 单文件模式：合并动态 import，关闭手动拆包
+        ...(isSingleFile ? {
+          inlineDynamicImports: true,
+          manualChunks: undefined,
+        } : {
+          // 将第三方依赖库单独打包成一个文件
+          manualChunks: {
+            react: ['react', 'react-dom', 'react-use'],
+            baseTool: ['es-toolkit', 'ramda', 'ahooks'],
+            dayjs: ['dayjs'],
+            monaco: ['monaco-editor', '@monaco-editor/react']
+          }
+        })
+      }
+    },
+    commonjsOptions: {
+      exclude: ['ckeditor/*'],
+    },
+  }
+})
