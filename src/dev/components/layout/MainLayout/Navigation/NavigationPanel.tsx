@@ -8,7 +8,7 @@
  */
 import React, { useState } from "react"
 import { useNavigate } from 'react-router'
-import { Home, ChevronDown, Settings, Info, LayoutGrid } from "lucide-react"
+import { Home, ChevronDown, Settings, Info } from "lucide-react"
 import { IoLogoGithub } from "react-icons/io5"
 import { initialCards, sections, type CardData } from "../../../../apps/Home/cardsConfig.tsx"
 import { cn } from "../../../../shadcn/lib/utils.ts"
@@ -103,44 +103,50 @@ export default function NavigationPanel({ onNavigate }: NavigationPanelProps) {
 
   // 分组卡片：圆角边框卡片 + 头部（accent 图标/标题/计数/折叠）+ 内容网格
   // 与首页 SectionBlock 的「每个分区一张卡」视觉语言一致，卡片边界即分组分割
+  // title 为空 = 无头模式（如快捷操作卡：上方已有 modal 大标题，不再重复分组头）
   const PanelSection = ({
     icon, title, meta, accent, collapsible = true, children,
   }: {
-    icon: React.ReactNode
-    title: string
+    icon?: React.ReactNode
+    title?: string
     meta?: string
-    accent: string
+    accent?: string
     collapsible?: boolean
     children: React.ReactNode
   }) => {
     const [collapsed, setCollapsed] = useState(false)
     return (
       <div className="rounded-xl border border-border/60 bg-background overflow-hidden">
-        <div
-          className={cn(
-            "flex items-center gap-2 px-3 py-2 select-none",
-            collapsible && "cursor-pointer"
-          )}
-          onClick={() => collapsible && setCollapsed(c => !c)}
-        >
-          <span className="flex items-center justify-center w-4 h-4 [&_svg]:w-full [&_svg]:h-full" style={{ color: accent }}>
-            {icon}
-          </span>
-          <span className="text-xs font-semibold text-foreground">{title}</span>
-          {meta && <span className="text-[10px] text-muted-foreground tabular-nums">{meta}</span>}
-          {collapsible && (
-            <ChevronDown
-              className={cn("w-3.5 h-3.5 ml-auto text-muted-foreground transition-transform duration-300", collapsed && "-rotate-90")}
-            />
-          )}
-        </div>
+        {title && (
+          <div
+            className={cn(
+              "flex items-center gap-2 px-3 py-2 select-none",
+              collapsible && "cursor-pointer"
+            )}
+            onClick={() => collapsible && setCollapsed(c => !c)}
+          >
+            <span className="flex items-center justify-center w-4 h-4 [&_svg]:w-full [&_svg]:h-full" style={{ color: accent }}>
+              {icon}
+            </span>
+            <span className="text-xs font-semibold text-foreground">{title}</span>
+            {meta && <span className="text-[10px] text-muted-foreground tabular-nums">{meta}</span>}
+            {collapsible && (
+              <ChevronDown
+                className={cn("w-3.5 h-3.5 ml-auto text-muted-foreground transition-transform duration-300", collapsed && "-rotate-90")}
+              />
+            )}
+          </div>
+        )}
         {/* grid-rows 0fr↔1fr 高度过渡动画 */}
         <div className={cn(
           "grid transition-[grid-template-rows] duration-300 ease-in-out",
           collapsed ? "grid-rows-[0fr]" : "grid-rows-[1fr]"
         )}>
           <div className="overflow-hidden min-h-0">
-            <div className="border-t border-border/70 px-1.5 py-1.5 grid gap-1 grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
+            <div className={cn(
+              "px-1.5 py-1.5 grid gap-1 grid-cols-1 sm:grid-cols-2 md:grid-cols-4",
+              title && "border-t border-border/70"
+            )}>
               {children}
             </div>
           </div>
@@ -163,8 +169,8 @@ export default function NavigationPanel({ onNavigate }: NavigationPanelProps) {
       {/* 内容滚动区（唯一的滚动条在这里） */}
       <div className="flex-1 min-h-0 overflow-y-auto p-3 pt-1">
         <div className="space-y-2">
-          {/* 顶部固定项 —— 与下方分组同构的卡片，消除突兀 */}
-          <PanelSection icon={<LayoutGrid />} title="快捷操作" accent="#64748b" collapsible={false}>
+          {/* 顶部固定项 —— 无头卡片（上方已有 modal 大标题，不重复分组头） */}
+          <PanelSection collapsible={false}>
             {topItems.map(renderItem)}
           </PanelSection>
 
