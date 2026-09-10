@@ -8,9 +8,9 @@
  */
 import React, { useState } from "react"
 import { useNavigate } from 'react-router'
-import { Home, ChevronDown, Settings, Info } from "lucide-react"
+import { Home, ChevronDown, Settings, Info, LayoutGrid } from "lucide-react"
 import { IoLogoGithub } from "react-icons/io5"
-import { initialCards, sections, type CardData, type Section } from "../../../../apps/Home/cardsConfig.tsx"
+import { initialCards, sections, type CardData } from "../../../../apps/Home/cardsConfig.tsx"
 import { cn } from "../../../../shadcn/lib/utils.ts"
 import routerPaths from "../../../../router/paths.ts"
 
@@ -101,28 +101,38 @@ export default function NavigationPanel({ onNavigate }: NavigationPanelProps) {
     )
   }
 
-  // 可折叠分组组件
-  const CollapsibleSection = ({ section, items }: { section: Section; items: CardData[] }) => {
+  // 分组卡片：圆角边框卡片 + 头部（accent 图标/标题/计数/折叠）+ 内容网格
+  // 与首页 SectionBlock 的「每个分区一张卡」视觉语言一致，卡片边界即分组分割
+  const PanelSection = ({
+    icon, title, meta, accent, collapsible = true, children,
+  }: {
+    icon: React.ReactNode
+    title: string
+    meta?: string
+    accent: string
+    collapsible?: boolean
+    children: React.ReactNode
+  }) => {
     const [collapsed, setCollapsed] = useState(false)
-    if (items.length === 0) return null
-    const readyCount = items.filter(i => i.status !== 'placeholder').length
     return (
-      <div className="mt-4 first:mt-0">
-        {/* 分组头：accent 色图标 + 标题 + 计数，底部细线贯穿做分割 */}
+      <div className="rounded-xl border border-border/70 bg-card/60 overflow-hidden">
         <div
-          className="flex items-center gap-2 px-1 pb-1.5 border-b border-border/50 cursor-pointer select-none"
-          onClick={() => setCollapsed(c => !c)}
+          className={cn(
+            "flex items-center gap-2 px-3 py-2 select-none",
+            collapsible && "cursor-pointer"
+          )}
+          onClick={() => collapsible && setCollapsed(c => !c)}
         >
-          <span className="flex items-center justify-center w-4 h-4 [&_svg]:w-full [&_svg]:h-full" style={{ color: section.accent }}>
-            {section.icon}
+          <span className="flex items-center justify-center w-4 h-4 [&_svg]:w-full [&_svg]:h-full" style={{ color: accent }}>
+            {icon}
           </span>
-          <span className="text-xs font-semibold text-foreground">{section.name}</span>
-          <span className="text-[10px] text-muted-foreground tabular-nums">
-            {items.length} 项{readyCount < items.length && ` · ${readyCount} 可用`}
-          </span>
-          <ChevronDown
-            className={cn("w-3.5 h-3.5 ml-auto text-muted-foreground transition-transform duration-300", collapsed && "-rotate-90")}
-          />
+          <span className="text-xs font-semibold text-foreground">{title}</span>
+          {meta && <span className="text-[10px] text-muted-foreground tabular-nums">{meta}</span>}
+          {collapsible && (
+            <ChevronDown
+              className={cn("w-3.5 h-3.5 ml-auto text-muted-foreground transition-transform duration-300", collapsed && "-rotate-90")}
+            />
+          )}
         </div>
         {/* grid-rows 0fr↔1fr 高度过渡动画 */}
         <div className={cn(
@@ -130,8 +140,8 @@ export default function NavigationPanel({ onNavigate }: NavigationPanelProps) {
           collapsed ? "grid-rows-[0fr]" : "grid-rows-[1fr]"
         )}>
           <div className="overflow-hidden min-h-0">
-            <div className="grid gap-1 pt-2 pb-1 grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
-              {items.map(renderItem)}
+            <div className="border-t border-border/50 px-1.5 py-1.5 grid gap-1 grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
+              {children}
             </div>
           </div>
         </div>
@@ -142,18 +152,30 @@ export default function NavigationPanel({ onNavigate }: NavigationPanelProps) {
   return (
     <div className={cn(
       // 容器：宽屏 Popover 限高 78vh，窄屏 Sheet 里不限高（由 SheetContent 控制滚动）
-      "p-4 bg-background/95 backdrop-blur-sm overflow-y-auto",
+      "p-3 space-y-3 bg-background/95 backdrop-blur-sm overflow-y-auto",
       "max-h-[100svh] sm:max-h-[78vh]"
     )}>
-      {/* 顶部固定项 */}
-      <div className="grid gap-1 pb-3 border-b border-border/60 grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
+      {/* 顶部固定项 —— 与下方分组同构的卡片，消除突兀 */}
+      <PanelSection icon={<LayoutGrid />} title="快捷操作" accent="#64748b" collapsible={false}>
         {topItems.map(renderItem)}
-      </div>
+      </PanelSection>
 
       {/* 按分区分组（排除 system，已在顶部）*/}
       {sections.filter(s => s.id !== 'system').map(section => {
         const items = initialCards.filter(c => c.section === section.id)
-        return <CollapsibleSection key={section.id} section={section} items={items} />
+        if (items.length === 0) return null
+        const readyCount = items.filter(i => i.status !== 'placeholder').length
+        return (
+          <PanelSection
+            key={section.id}
+            icon={section.icon}
+            title={section.name}
+            meta={`${items.length} 项${readyCount < items.length ? ` · ${readyCount} 可用` : ''}`}
+            accent={section.accent}
+          >
+            {items.map(renderItem)}
+          </PanelSection>
+        )
       })}
     </div>
   )
