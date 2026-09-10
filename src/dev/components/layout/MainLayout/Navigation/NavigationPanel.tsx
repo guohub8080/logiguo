@@ -81,14 +81,14 @@ export default function NavigationPanel({ onNavigate }: NavigationPanelProps) {
         key={card.id}
         onClick={(e) => handleCardClick(card.href, e)}
         className={cn(
-          "flex items-center gap-2.5 p-2.5 rounded-lg cursor-pointer",
+          "flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer",
           "hover:bg-accent transition-colors",
           "active:scale-[0.98] transition-transform",
           isPlaceholder && "opacity-60"
         )}
       >
         <div
-          className="shrink-0 w-5 h-5 flex items-center justify-center transition-transform duration-300 [&_svg]:w-full [&_svg]:h-full"
+          className="shrink-0 w-6 h-6 flex items-center justify-center transition-transform duration-300 [&_svg]:w-full [&_svg]:h-full"
           style={{ color: card.color }}
         >
           {card.icon}
@@ -105,16 +105,21 @@ export default function NavigationPanel({ onNavigate }: NavigationPanelProps) {
   const CollapsibleSection = ({ section, items }: { section: Section; items: CardData[] }) => {
     const [collapsed, setCollapsed] = useState(false)
     if (items.length === 0) return null
+    const readyCount = items.filter(i => i.status !== 'placeholder').length
     return (
-      <div>
+      <div className="mt-4 first:mt-0">
+        {/* 分组头：accent 色图标 + 标题 + 计数，底部细线贯穿做分割 */}
         <div
-          className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-muted/60 cursor-pointer select-none"
+          className="flex items-center gap-2 px-1 pb-1.5 border-b border-border/50 cursor-pointer select-none"
           onClick={() => setCollapsed(c => !c)}
         >
-          <span style={{ color: section.accent }} className="flex items-center justify-center">
+          <span className="flex items-center justify-center w-4 h-4 [&_svg]:w-full [&_svg]:h-full" style={{ color: section.accent }}>
             {section.icon}
           </span>
           <span className="text-xs font-semibold text-foreground">{section.name}</span>
+          <span className="text-[10px] text-muted-foreground tabular-nums">
+            {items.length} 项{readyCount < items.length && ` · ${readyCount} 可用`}
+          </span>
           <ChevronDown
             className={cn("w-3.5 h-3.5 ml-auto text-muted-foreground transition-transform duration-300", collapsed && "-rotate-90")}
           />
@@ -125,7 +130,7 @@ export default function NavigationPanel({ onNavigate }: NavigationPanelProps) {
           collapsed ? "grid-rows-[0fr]" : "grid-rows-[1fr]"
         )}>
           <div className="overflow-hidden min-h-0">
-            <div className="grid gap-1 py-1 grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
+            <div className="grid gap-1 pt-2 pb-1 grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
               {items.map(renderItem)}
             </div>
           </div>
@@ -141,7 +146,7 @@ export default function NavigationPanel({ onNavigate }: NavigationPanelProps) {
       "max-h-[100svh] sm:max-h-[78vh]"
     )}>
       {/* 顶部固定项 */}
-      <div className="grid gap-1 pb-2 mb-1 border-b border-border/40 grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
+      <div className="grid gap-1 pb-3 border-b border-border/60 grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
         {topItems.map(renderItem)}
       </div>
 
