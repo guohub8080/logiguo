@@ -105,17 +105,15 @@ export default function Navigation() {
     return () => window.removeEventListener('keydown', onKey)
   }, [isWideScreen, setIsNavigationPanelOpen])
 
-  // 宽屏 modal：打开时锁定 body 滚动，并用等宽 padding 顶住消失的滚动条（无空槽、无横移）
+  // 宽屏 modal：打开时锁定 body 滚动。
+  // 注：不做 padding 补偿——文档流内容被全屏遮罩盖住，横移不可见；
+  // fixed 元素（胶囊/modal 卡）不吃 body padding，补偿反而无效，滚动条消失的基准跳变靠胶囊极速淡出掩盖。
   useEffect(() => {
     if (!isWideScreen || !isNavigationPanelOpen) return
     const prevOverflow = document.body.style.overflow
-    const prevPad = document.body.style.paddingRight
-    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth
     document.body.style.overflow = 'hidden'
-    if (scrollbarWidth > 0) document.body.style.paddingRight = `${scrollbarWidth}px`
     return () => {
       document.body.style.overflow = prevOverflow
-      document.body.style.paddingRight = prevPad
     }
   }, [isWideScreen, isNavigationPanelOpen])
 
@@ -179,8 +177,8 @@ export default function Navigation() {
                       "cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                       "relative z-[50] flex items-center justify-center gap-2 pointer-events-auto",
                       "hover:shadow-[inset_0_0_0_1.5px_rgb(148_163_184/0.3)]",
-                      // modal 打开时触发器快速淡出隐藏：不浮在毛玻璃遮罩上，也不受滚动条锁定影响
-                      isNavigationPanelOpen && "opacity-0 scale-95 pointer-events-none"
+                      // modal 打开时触发器极速淡出（75ms，掩盖滚动条消失引起的 fixed 基准跳变）：不浮在毛玻璃遮罩上
+                      isNavigationPanelOpen && "opacity-0 scale-95 pointer-events-none duration-75"
                     )}
                     onClick={() => setIsNavigationPanelOpen(!isNavigationPanelOpen)}
                     onKeyDown={(e) => {
