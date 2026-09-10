@@ -115,7 +115,7 @@ export default function NavigationPanel({ onNavigate }: NavigationPanelProps) {
   }) => {
     const [collapsed, setCollapsed] = useState(false)
     return (
-      <div className="rounded-xl border border-border/70 bg-card/60 overflow-hidden">
+      <div className="rounded-xl border border-border/60 bg-background overflow-hidden">
         <div
           className={cn(
             "flex items-center gap-2 px-3 py-2 select-none",
@@ -140,7 +140,7 @@ export default function NavigationPanel({ onNavigate }: NavigationPanelProps) {
           collapsed ? "grid-rows-[0fr]" : "grid-rows-[1fr]"
         )}>
           <div className="overflow-hidden min-h-0">
-            <div className="border-t border-border/50 px-1.5 py-1.5 grid gap-1 grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
+            <div className="border-t border-border/70 px-1.5 py-1.5 grid gap-1 grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
               {children}
             </div>
           </div>
@@ -151,8 +151,8 @@ export default function NavigationPanel({ onNavigate }: NavigationPanelProps) {
 
   return (
     <div className={cn(
-      // 容器：宽屏 Popover 限高 78vh，窄屏 Sheet 里不限高（由 SheetContent 控制滚动）
-      "p-3 space-y-3 bg-background/95 backdrop-blur-sm overflow-y-auto",
+      // 容器：灰底衬托白色分组卡（iOS 设置面板范式；foreground 6% 保证浅/暗主题下都有足够对比），宽屏 Popover 限高 78vh，窄屏 Sheet 不限高
+      "p-3 space-y-3 bg-foreground/[0.06] backdrop-blur-sm overflow-y-auto",
       "max-h-[100svh] sm:max-h-[78vh]"
     )}>
       {/* 顶部固定项 —— 与下方分组同构的卡片，消除突兀 */}
