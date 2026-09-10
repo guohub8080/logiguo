@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { createPortal } from "react-dom"
 import { useNavigate, useLocation } from 'react-router'
 import { useWindowScroll } from "@uidotdev/usehooks"
@@ -95,11 +95,47 @@ export default function Navigation() {
 
   // 注：宽屏用居中 modal（毛玻璃遮罩），窄屏用 Sheet，由 isWideScreen JS 判断（断点变化时关闭面板）
 
-  // 宽屏 modal：ESC 关闭
+  // —— 胶囊/ modal 两阶段时序编排 ——
+  // 打开：胶囊先极速淡出（75ms），90ms 时 modal 才弹出；关闭：modal 完全淡完（300ms），330ms 时胶囊才回来
+  // 两者任何时刻不并存，滚动条消失的 fixed 基准跳变完全发生在胶囊不可见期间
+  const [pillHidden, setPillHidden] = useState(false)
+  const openTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  // 宽屏打开序列：先藏胶囊，再开 modal（由胶囊 onClick 调用）
+  const openNavModal = () => {
+    if (isNavigationPanelOpen) return
+    setPillHidden(true)
+    if (openTimerRef.current) clearTimeout(openTimerRef.current)
+    openTimerRef.current = setTimeout(() => {
+      openTimerRef.current = null
+      setIsNavigationPanelOpen(true)
+    }, 90)
+  }
+
+  // modal 关闭后（任何路径：ESC/遮罩/导航/断点），330ms 时胶囊复原
+  useEffect(() => {
+    if (isNavigationPanelOpen) return
+    const t = setTimeout(() => setPillHidden(false), 330)
+    return () => clearTimeout(t)
+  }, [isNavigationPanelOpen])
+
+  // 卸载清理 pending 打开
+  useEffect(() => () => {
+    if (openTimerRef.current) clearTimeout(openTimerRef.current)
+  }, [])
+
+  // 宽屏 modal：ESC 关闭（打开等待期内按 ESC 取消打开并复原胶囊）
   useEffect(() => {
     if (!isWideScreen) return
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setIsNavigationPanelOpen(false)
+      if (e.key !== 'Escape') return
+      if (openTimerRef.current) {
+        clearTimeout(openTimerRef.current)
+        openTimerRef.current = null
+        setPillHidden(false)
+        return
+      }
+      setIsNavigationPanelOpen(false)
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
@@ -177,14 +213,14 @@ export default function Navigation() {
                       "cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                       "relative z-[50] flex items-center justify-center gap-2 pointer-events-auto",
                       "hover:shadow-[inset_0_0_0_1.5px_rgb(148_163_184/0.3)]",
-                      // modal 打开时触发器极速淡出（75ms，掩盖滚动条消失引起的 fixed 基准跳变）：不浮在毛玻璃遮罩上
-                      isNavigationPanelOpen && "opacity-0 scale-95 pointer-events-none duration-75"
+                      // 两阶段时序：modal 打开期间胶囊保持隐藏（pillHidden 由编排控制，先于 modal 隐藏、后于 modal 复原）
+                      pillHidden && "opacity-0 scale-95 pointer-events-none duration-75"
                     )}
-                    onClick={() => setIsNavigationPanelOpen(!isNavigationPanelOpen)}
+                    onClick={openNavModal}
                     onKeyDown={(e) => {
                       if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault();
-                        setIsNavigationPanelOpen(!isNavigationPanelOpen);
+                        openNavModal();
                       }
                     }}
                   >
