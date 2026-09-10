@@ -178,9 +178,9 @@ export default function Navigation() {
                       "px-4 py-2 rounded-full hover:bg-accent",
                       "cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                       "relative z-[50] flex items-center justify-center gap-2 pointer-events-auto",
-                      isNavigationPanelOpen && "bg-accent text-foreground",
                       "hover:shadow-[inset_0_0_0_1.5px_rgb(148_163_184/0.3)]",
-                      isNavigationPanelOpen && "shadow-[inset_0_0_0_1.5px_rgb(148_163_184/0.3)]"
+                      // modal 打开时触发器快速淡出隐藏：不浮在毛玻璃遮罩上，也不受滚动条锁定影响
+                      isNavigationPanelOpen && "opacity-0 scale-95 pointer-events-none"
                     )}
                     onClick={() => setIsNavigationPanelOpen(!isNavigationPanelOpen)}
                     onKeyDown={(e) => {
