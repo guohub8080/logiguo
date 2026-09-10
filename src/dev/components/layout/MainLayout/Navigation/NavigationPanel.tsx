@@ -161,9 +161,8 @@ export default function NavigationPanel({ onNavigate }: NavigationPanelProps) {
       // 头部固定，内容区单一滚动（避免双滚动条）
       "flex flex-col bg-foreground/[0.06] max-h-[100svh] sm:max-h-[78vh]"
     )}>
-      {/* iOS 风格头部：grabber 把手 + 居中标题（固定不随内容滚动） */}
-      <div className="pt-2.5 pb-1.5 flex flex-col items-center gap-2 shrink-0">
-        <div className="w-9 h-1.5 rounded-full bg-foreground/15" />
+      {/* 头部：居中标题 */}
+      <div className="pt-3 pb-1.5 flex items-center justify-center shrink-0">
         <h2 className="m-0 text-sm font-semibold text-foreground">导航</h2>
       </div>
       {/* 内容滚动区（唯一的滚动条在这里） */}
