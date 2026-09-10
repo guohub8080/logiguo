@@ -141,15 +141,18 @@ export default function Navigation() {
     return () => window.removeEventListener('keydown', onKey)
   }, [isWideScreen, setIsNavigationPanelOpen])
 
-  // 宽屏 modal：打开时锁定 body 滚动。
-  // 注：不做 padding 补偿——文档流内容被全屏遮罩盖住，横移不可见；
-  // fixed 元素（胶囊/modal 卡）不吃 body padding，补偿反而无效，滚动条消失的基准跳变靠胶囊极速淡出掩盖。
+  // 宽屏 modal：打开时锁定 body 滚动 + 等宽 padding 补偿（成熟库标准方案，react-remove-scroll/Bootstrap 同款）——
+  // header 及其 absolute 胶囊是文档流尺寸，补偿后宽度稳定，滚动条消失不再引起任何跳变
   useEffect(() => {
     if (!isWideScreen || !isNavigationPanelOpen) return
     const prevOverflow = document.body.style.overflow
+    const prevPad = document.body.style.paddingRight
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth
     document.body.style.overflow = 'hidden'
+    if (scrollbarWidth > 0) document.body.style.paddingRight = `${scrollbarWidth}px`
     return () => {
       document.body.style.overflow = prevOverflow
+      document.body.style.paddingRight = prevPad
     }
   }, [isWideScreen, isNavigationPanelOpen])
 
@@ -189,16 +192,11 @@ export default function Navigation() {
           {/* 中间区域 - 页面标题或空白 */}
           <div className="flex-1"></div>
 
-          {/* 中间居中的页面标题按钮 - fixed定位在整个屏幕中心 */}
+          {/* 中间居中的页面标题按钮 - absolute 于 sticky header（跟随文档流内容区居中，配合锁滚动的 padding 补偿实现零跳变） */}
           {!isHomePage && pageTitle && (
             <div
-              className="fixed left-1/2 flex items-center justify-center pointer-events-none"
-              style={{
-                zIndex: 50,
-                top: 0,
-                height: `${navigationHeight}px`,
-                transform: 'translateX(-50%)',
-              }}
+              className="absolute left-1/2 -translate-x-1/2 top-0 flex items-center justify-center pointer-events-none"
+              style={{ zIndex: 50, height: `${navigationHeight}px` }}
             >
               {/* 标题按钮（宽屏触发居中 modal，窄屏触发 Sheet）+ 对应面板 */}
               {isWideScreen ? (
