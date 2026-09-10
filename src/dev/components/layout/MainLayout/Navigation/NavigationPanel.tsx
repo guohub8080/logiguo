@@ -151,32 +151,42 @@ export default function NavigationPanel({ onNavigate }: NavigationPanelProps) {
 
   return (
     <div className={cn(
-      // 容器：灰底衬托白色分组卡（iOS 设置面板范式；foreground 6% 保证浅/暗主题下都有足够对比），宽屏 Popover 限高 78vh，窄屏 Sheet 不限高
-      "p-3 space-y-3 bg-foreground/[0.06] backdrop-blur-sm overflow-y-auto",
-      "max-h-[100svh] sm:max-h-[78vh]"
+      // 容器：灰底衬托白色分组卡（iOS 设置面板范式；foreground 6% 保证浅/暗主题下都有足够对比）
+      // 头部固定，内容区单一滚动（避免双滚动条）
+      "flex flex-col bg-foreground/[0.06] max-h-[100svh] sm:max-h-[78vh]"
     )}>
-      {/* 顶部固定项 —— 与下方分组同构的卡片，消除突兀 */}
-      <PanelSection icon={<LayoutGrid />} title="快捷操作" accent="#64748b" collapsible={false}>
-        {topItems.map(renderItem)}
-      </PanelSection>
-
-      {/* 按分区分组（排除 system，已在顶部）*/}
-      {sections.filter(s => s.id !== 'system').map(section => {
-        const items = initialCards.filter(c => c.section === section.id)
-        if (items.length === 0) return null
-        const readyCount = items.filter(i => i.status !== 'placeholder').length
-        return (
-          <PanelSection
-            key={section.id}
-            icon={section.icon}
-            title={section.name}
-            meta={`${items.length} 项${readyCount < items.length ? ` · ${readyCount} 可用` : ''}`}
-            accent={section.accent}
-          >
-            {items.map(renderItem)}
+      {/* iOS 风格头部：grabber 把手 + 居中标题（固定不随内容滚动） */}
+      <div className="pt-2.5 pb-1.5 flex flex-col items-center gap-2 shrink-0">
+        <div className="w-9 h-1.5 rounded-full bg-foreground/15" />
+        <h2 className="m-0 text-sm font-semibold text-foreground">导航</h2>
+      </div>
+      {/* 内容滚动区（唯一的滚动条在这里） */}
+      <div className="flex-1 min-h-0 overflow-y-auto p-3 pt-1">
+        <div className="space-y-2">
+          {/* 顶部固定项 —— 与下方分组同构的卡片，消除突兀 */}
+          <PanelSection icon={<LayoutGrid />} title="快捷操作" accent="#64748b" collapsible={false}>
+            {topItems.map(renderItem)}
           </PanelSection>
-        )
-      })}
+
+          {/* 按分区分组（排除 system，已在顶部）*/}
+          {sections.filter(s => s.id !== 'system').map(section => {
+            const items = initialCards.filter(c => c.section === section.id)
+            if (items.length === 0) return null
+            const readyCount = items.filter(i => i.status !== 'placeholder').length
+            return (
+              <PanelSection
+                key={section.id}
+                icon={section.icon}
+                title={section.name}
+                meta={`${items.length} 项${readyCount < items.length ? ` · ${readyCount} 可用` : ''}`}
+                accent={section.accent}
+              >
+                {items.map(renderItem)}
+              </PanelSection>
+            )
+          })}
+        </div>
+      </div>
     </div>
   )
 }
