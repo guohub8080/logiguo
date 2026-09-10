@@ -218,7 +218,7 @@ private _cache: X | undefined = void 0
 
 - 每次对话结束后，**自动 commit 当前所有未提交的改动**，使用 `git add -A`。提交信息遵循 **Conventional Commits** 规范（如 `feat(...)`、`refactor(...)`、`chore(deps): ...`）。
 - **暂时只 commit、不 push**：每次对话结束只做本地提交，**绝对禁止执行 `git push` 等远程命令**（除非用户在某次对话中明确要求 push，才单独执行那一次）。
-- **不要每次改动后都跑 `pnpm build` 验证**：文案、颜色、注释等纯字面量小改动直接提交即可；仅在大范围重构、类型/接口/路由改动、依赖变更，或用户明确要求验证时才构建。
+- **不要每次改动后都跑 `pnpm build` 验证**：文案、颜色、注释等纯字面量小改动直接提交即可；需要验证语法/类型时用轻量的 `npx tsc --noEmit -p tsconfig.app.json`（约 4 秒，比 build 的 tsc+vite 全流程快一个量级，且更严格——能抓到 build 放过的预存错误）；全量 `pnpm build` 仅在大范围重构、依赖变更、或用户明确要求时才跑。常驻的 dev server HMR 报错也可作为即时语法反馈。
 - 依赖刻意保持最新（近期刚整体升级到 React 19 + Vite 8 + TS 6 + ESLint 10）。`allowBuilds` / `minimumReleaseAgeExclude` 等设置见 `pnpm-workspace.yaml`。
 
 ### 已知坑（实测踩过）
