@@ -131,11 +131,6 @@
     font-weight: var(--font-normal);
   }
 
-  /* 滚动条空间常驻：滚动条出现/消失不引起内容横移（fixed 居中元素与文档流内容不错位） */
-  html {
-    scrollbar-gutter: stable;
-  }
-
   button,
   [role="button"] {
     @apply cursor-pointer;

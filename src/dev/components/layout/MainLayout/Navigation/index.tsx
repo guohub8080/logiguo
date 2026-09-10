@@ -105,13 +105,17 @@ export default function Navigation() {
     return () => window.removeEventListener('keydown', onKey)
   }, [isWideScreen, setIsNavigationPanelOpen])
 
-  // 宽屏 modal：打开时锁定 body 滚动（配合 scrollbar-gutter: stable 消除布局抖动），避免双滚动条
+  // 宽屏 modal：打开时锁定 body 滚动，并用等宽 padding 顶住消失的滚动条（无空槽、无横移）
   useEffect(() => {
     if (!isWideScreen || !isNavigationPanelOpen) return
     const prevOverflow = document.body.style.overflow
+    const prevPad = document.body.style.paddingRight
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth
     document.body.style.overflow = 'hidden'
+    if (scrollbarWidth > 0) document.body.style.paddingRight = `${scrollbarWidth}px`
     return () => {
       document.body.style.overflow = prevOverflow
+      document.body.style.paddingRight = prevPad
     }
   }, [isWideScreen, isNavigationPanelOpen])
 
