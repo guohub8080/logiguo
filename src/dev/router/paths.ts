@@ -22,6 +22,9 @@ const routerPaths = {
   // SVG组件文档
   svgComponentsDoc: "svg_components_doc",
 
+  // 本站组件（WebDevComps）
+  webDev: "web-dev",
+
   // 工具
   shadowTool: "shadow-tool",
 
