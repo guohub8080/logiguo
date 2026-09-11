@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { HexAlphaColorPicker, HslColorPicker, RgbColorPicker } from "react-colorful";
+import type { HslColor, RgbColor } from "react-colorful";
 import { useColorControl } from "@dev/store/useColorControl";
 import { parseHexColor, toHex, hslaToRgba, rgbaToHsla, clamp } from "../utils/color.ts";
 import { AdvancedColorWheel } from "./AdvancedColorWheel.tsx";
@@ -115,19 +116,19 @@ export const InlineColorPicker: React.FC<InlineColorPickerProps> = ({
       case "hex":
         return (
           <div style={{ width, height }}>
-            <HexAlphaColorPicker color={getColorForMode()} onChange={handleColorChange} />
+            <HexAlphaColorPicker color={getColorForMode() as string} onChange={handleColorChange} />
           </div>
         );
       case "hsl":
         return (
           <div style={{ width, height }}>
-            <HslColorPicker color={getColorForMode()} onChange={handleColorChange} />
+            <HslColorPicker color={getColorForMode() as HslColor} onChange={handleColorChange} />
           </div>
         );
       case "rgb":
         return (
           <div style={{ width, height }}>
-            <RgbColorPicker color={getColorForMode()} onChange={handleColorChange} />
+            <RgbColorPicker color={getColorForMode() as RgbColor} onChange={handleColorChange} />
           </div>
         );
       case "wheel":

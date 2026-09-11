@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import iro from "@jaames/iro";
+import { createIroPicker } from "../createIroPicker";
 
 interface IroSliderProps {
   /**
@@ -56,7 +57,7 @@ export const IroSlider: React.FC<IroSliderProps> = ({
         };
 
         // 创建取色器实例
-        colorPickerRef.current = new iro.ColorPicker(sliderRef.current, config);
+        colorPickerRef.current = createIroPicker(sliderRef.current, config);
 
         // 监听颜色变化事件
         colorPickerRef.current.on('color:change', (colorObj: any) => {

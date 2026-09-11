@@ -111,6 +111,11 @@ export interface PathMotionAnimationConfig {
   isFreeze?: boolean;
 
   /**
+   * 是否点击后才开始播放，默认 false（自动开始）
+   */
+  isBeginWithClick?: boolean;
+
+  /**
    * 循环次数，0 表示无限循环，默认 0
    */
   loopCount?: number;

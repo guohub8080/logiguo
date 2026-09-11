@@ -12,15 +12,31 @@ export interface SvgConverterSettings {
 	prettier: boolean
 	functionType: 'arrow-implicit' | 'arrow-explicit' | 'function'
 	exportType: 'default' | 'named' | 'both'
+	/** id/class 保留策略（与 removeIds 并存的历史开关，all=全保留） */
+	preserveMode?: 'all' | 'classes-only' | 'ids-only' | 'none'
+	/** 是否生成 Props（PropsSettings 开关） */
+	needsProps?: boolean
+	/** 各 prop 的配置（名称 → 配置） */
+	propsDetailConfig?: Record<string, PropDetailConfig>
+	/** props 读取方式：destruct=解构 / direct=只标注类型 */
+	propsAccessMode?: 'destruct' | 'direct'
+	/** direct 模式下的类型定义形式 */
+	directPropsTypeDefinition?: 'interface' | 'inline'
+	/** 是否展开剩余 props（...rest） */
+	enableRestSpread?: boolean
+	/** ...rest 的展开位置 */
+	restSpreadOrder?: 'before' | 'after' | 'first' | 'last'
 }
 
 // PropsSettings 用到的属性配置类型
 export interface PropDetailConfig {
 	type: 'string' | 'number' | 'boolean' | 'ReactNode' | 'function' | 'object' | 'array' | 'enum'
 	required: boolean
-	default?: string
+	defaultValue?: string
 	enumValues?: string[]
 	description?: string
+	/** 解构模式下的取值方式 */
+	access?: 'destruct' | 'direct'
 }
 
 export type PropsAccessType = 'public' | 'private' | 'protected'

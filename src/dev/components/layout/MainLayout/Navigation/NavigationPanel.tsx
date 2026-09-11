@@ -8,7 +8,7 @@
  */
 import React, { useState } from "react"
 import { useNavigate } from 'react-router'
-import { Home, ChevronDown, Settings, Info } from "lucide-react"
+import { Home, ChevronDown, Settings, Info, X } from "lucide-react"
 import { IoLogoGithub } from "react-icons/io5"
 import { initialCards, sections, type CardData } from "../../../../apps/Home/cardsConfig.tsx"
 import { cn } from "../../../../shadcn/lib/utils.ts"
@@ -16,9 +16,11 @@ import routerPaths from "../../../../router/paths.ts"
 
 interface NavigationPanelProps {
   onNavigate?: () => void
+  /** 关闭整个导航面板（右上角 X；不传则不显示，如窄屏 Sheet 自带关闭） */
+  onClose?: () => void
 }
 
-export default function NavigationPanel({ onNavigate }: NavigationPanelProps) {
+export default function NavigationPanel({ onNavigate, onClose }: NavigationPanelProps) {
   const navigate = useNavigate()
 
   const handleCardClick = (href: string, e?: React.MouseEvent) => {
@@ -161,9 +163,22 @@ export default function NavigationPanel({ onNavigate }: NavigationPanelProps) {
       // 头部固定，内容区单一滚动（避免双滚动条）
       "flex flex-col bg-foreground/[0.06] max-h-[100svh] sm:max-h-[78vh]"
     )}>
-      {/* 头部：居中标题 */}
-      <div className="pt-3 pb-1.5 flex items-center justify-center shrink-0">
+      {/* 头部：居中标题 + 右上角关闭 */}
+      <div className="pt-3 pb-1.5 px-3 flex items-center justify-between shrink-0">
+        {/* 左侧占位，保证标题视觉居中 */}
+        <span className="w-7 h-7" aria-hidden="true" />
         <h2 className="m-0 text-sm font-semibold text-foreground">导航</h2>
+        {onClose ? (
+          <button
+            onClick={onClose}
+            aria-label="关闭导航"
+            className="w-7 h-7 flex items-center justify-center rounded-full text-muted-foreground hover:text-foreground hover:bg-foreground/[0.08] active:bg-foreground/[0.12] transition-colors cursor-pointer"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        ) : (
+          <span className="w-7 h-7" aria-hidden="true" />
+        )}
       </div>
       {/* 内容滚动区（唯一的滚动条在这里） */}
       <div className="flex-1 min-h-0 overflow-y-auto p-3 pt-1">

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import iro from "@jaames/iro";
+import { createIroPicker } from "../createIroPicker";
 import { parseHexColor, toHex } from "../utils/color";
 
 interface LayoutColorAdjusterProps {
@@ -107,7 +108,7 @@ export const LayoutColorAdjuster: React.FC<LayoutColorAdjusterProps> = ({
         }
 
         // 创建取色器实例
-        colorPickerRef.current = new iro.ColorPicker(pickerRef.current, iroConfig);
+        colorPickerRef.current = createIroPicker(pickerRef.current, iroConfig);
 
         // 监听颜色变化事件
         colorPickerRef.current.on('color:change', (color: any) => {

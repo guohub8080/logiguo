@@ -97,7 +97,6 @@ export default function Navigation() {
 
   // —— 胶囊/ modal 两阶段时序编排 ——
   // 打开：胶囊先极速淡出（75ms），90ms 时 modal 才弹出；关闭：modal 完全淡完（300ms），330ms 时胶囊才回来
-  // 两者任何时刻不并存，滚动条消失的 fixed 基准跳变完全发生在胶囊不可见期间
   const [pillHidden, setPillHidden] = useState(false)
   const openTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -264,7 +263,7 @@ export default function Navigation() {
                             pointerEvents: isNavigationPanelOpen ? 'auto' : 'none',
                           }}
                         >
-                          <NavigationPanel onNavigate={() => setIsNavigationPanelOpen(false)} />
+                          <NavigationPanel onNavigate={() => setIsNavigationPanelOpen(false)} onClose={() => setIsNavigationPanelOpen(false)} />
                         </div>
                       </div>
                     </>,
@@ -316,7 +315,7 @@ export default function Navigation() {
                     <SheetContent side="left" className="w-[300px] p-0 overflow-y-auto" hideClose>
                       <SheetTitle className="sr-only">导航菜单</SheetTitle>
                       <SheetDescription className="sr-only">浏览并跳转到各个功能页面</SheetDescription>
-                      <NavigationPanel onNavigate={() => setIsNavigationPanelOpen(false)} />
+                      <NavigationPanel onNavigate={() => setIsNavigationPanelOpen(false)} onClose={() => setIsNavigationPanelOpen(false)} />
                     </SheetContent>
                   </Sheet>
                 </>

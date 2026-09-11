@@ -7,7 +7,7 @@ import XLogoIcon from "../../collections/Icons/XLogoIcon"
 interface TweetCard_RT_0Margin_Props {
     children: ReactNode
     borderRadius?: CSSProperties["borderRadius"]
-    paddingTop?: CSSProperties["paddingTop"]
+    paddingTop?: number
 }
 
 // ============================================ Constants ============================================

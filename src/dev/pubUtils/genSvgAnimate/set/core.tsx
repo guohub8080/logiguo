@@ -38,7 +38,7 @@ export function genSetVisibility(options: GenSetVisibilityOptions): React.ReactE
  * 瞬间切换 opacity
  */
 export function genSetOpacity(options: GenSetOpacityOptions): React.ReactElement | null {
-  return genSet({ attributeName: 'opacity', to: String(options.to), ...options });
+  return genSet({ attributeName: 'opacity', ...options, to: String(options.to) });
 }
 
 /**

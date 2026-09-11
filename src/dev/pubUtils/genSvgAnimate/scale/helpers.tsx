@@ -42,7 +42,7 @@ export function genAnimateScaleSimple(
 ) {
   return genAnimateScale({
     ...options,
-    timeline: [{ durationSeconds: duration, toScale }],
+    timeline: [{ durationSeconds: duration, toValue }],
   });
 }
 

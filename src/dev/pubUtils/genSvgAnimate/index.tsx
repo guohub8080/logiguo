@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { getSvgBegin } from '@pub-utils/common/getSvgBegin';
+import { getSvgBegin, type SvgBeginEventType } from '@pub-utils/common/getSvgBegin';
 
 // ==================== 导入工具类型 ====================
 import { 

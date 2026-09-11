@@ -1,3 +1,4 @@
+/** @jsxImportSource @emotion/react */
 import React, { ReactNode } from 'react';
 import { css } from '@emotion/react';
 import { isNumber } from "es-toolkit/predicate"

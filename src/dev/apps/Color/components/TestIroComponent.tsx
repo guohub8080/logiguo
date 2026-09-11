@@ -1,5 +1,6 @@
 import * as React from 'react';
 import iro from '@jaames/iro';
+import { createIroPicker } from '../createIroPicker';
 import { parseHexColor, toHex } from '../utils/color';
 
 export const TestIroComponent: React.FC = () => {
@@ -10,7 +11,7 @@ export const TestIroComponent: React.FC = () => {
   React.useEffect(() => {
     if (pickerRef.current && !isInitialized) {
       try {
-        const colorPicker = new iro.ColorPicker(pickerRef.current, {
+        const colorPicker = createIroPicker(pickerRef.current, {
           width: 280,
           color: color,
           padding: 5

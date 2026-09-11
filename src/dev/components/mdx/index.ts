@@ -5,6 +5,9 @@
 
 import React from 'react';
 import { MDXProvider } from '@mdx-js/react';
+
+// @mdx-js/react 未重导出 MDXComponents 类型，从 Provider 参数反推
+type MDXComponentsType = NonNullable<Parameters<typeof MDXProvider>[0]['components']>;
 import {
   H1, H2, H3, H4,
   Paragraph, Strong, Em, Link,
@@ -57,11 +60,11 @@ interface MDXProviderWrapperProps {
 }
 
 export const MDXProviderWrapper: React.FC<MDXProviderWrapperProps> = ({ children }) => {
-  return React.createElement(
-    MDXProvider,
-    { components: MDXComponents },
-    React.createElement('div', { className: 'max-w-none' }, children)
-  );
+  return React.createElement(MDXProvider, {
+    // 自定义组件的 props 是各自收窄后的类型（如 Link 仅 href/children），与 MDX 全量 props 不完全重合，运行时由 MDX 传子集
+    components: MDXComponents as unknown as MDXComponentsType,
+    children: React.createElement('div', { className: 'max-w-none' }, children),
+  });
 };
 
 // 导出工具函数

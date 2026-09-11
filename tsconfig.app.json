@@ -92,6 +92,13 @@
       ],
       "@pubUtils/*": [
         "./src/dev/pubComponents/PubUtils/*"
+      ],
+      /* 裸名别名（代码里有不带子路径的 import，如 @book-comps、@svg-anim） */
+      "@book-comps": [
+        "./src/dev/components/bookComponents/index.tsx"
+      ],
+      "@svg-anim": [
+        "./src/dev/pubUtils/genSvgAnimate/index.tsx"
       ]
     },
     /* Bundler mode */
@@ -111,6 +118,11 @@
   },
   "include": [
     "src"
+  ],
+  "exclude": [
+    // 死代码（仅互相引用的遗留文件）：backup 是 museason 时代快照，FloatToolbar 只被 backup 引用且 import 了不存在的 articlesLoader
+    "**/*.backup.tsx",
+    "src/dev/apps/FloatToolbar"
   ]
 }
 

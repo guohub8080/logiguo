@@ -73,9 +73,10 @@ class ConsoleLogger {
         if (level === 'error' && argHasStackTrace(args)) {
           const stackMatch = message.match(/at\s+(.+?)\s+\((.+?):(\d+):(\d+)\)/);
           if (stackMatch) {
-            [, , url, line, column] = stackMatch;
-            line = parseInt(line);
-            column = parseInt(column);
+            const [, , matchedUrl, lineStr, colStr] = stackMatch;
+            url = matchedUrl;
+            line = parseInt(lineStr);
+            column = parseInt(colStr);
           }
         }
 

@@ -33,7 +33,7 @@ export function genAnimateSkewXSimple(
 ) {
   return genAnimateSkewX({
     ...options,
-    timeline: [{ durationSeconds: duration, toAngle }],
+    timeline: [{ durationSeconds: duration, toValue }],
   });
 }
 

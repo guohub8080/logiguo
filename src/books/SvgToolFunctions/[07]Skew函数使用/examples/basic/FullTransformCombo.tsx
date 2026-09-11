@@ -19,8 +19,9 @@ export const FullTransformCombo = () => {
                     })}
                     {genAnimateScale({
                         timeline: [
-                            { toValue: { x: 1.15, y: 0.85 }, durationSeconds: 2 },
-                            { toValue: { x: 0.85, y: 1.15 }, durationSeconds: 2 }
+                            // 注：scale 仅支持等比缩放（数值），不支持 {x,y} 非等比
+                            { toValue: 1.15, durationSeconds: 2 },
+                            { toValue: 0.9, durationSeconds: 2 }
                         ],
                         loopCount: 0,
                         isAdditive: true

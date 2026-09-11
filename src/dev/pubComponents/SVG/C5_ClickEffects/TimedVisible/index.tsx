@@ -107,8 +107,8 @@ const TimedVisible = (props: {
               className="rect"
               x={hotArea.x}
               y={hotArea.y}
-              width={hotArea.width}
-              height={hotArea.height}
+              width={hotArea.w}
+              height={hotArea.h}
               style={{
                 pointerEvents: "visiblePainted",
                 opacity: 0,

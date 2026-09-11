@@ -1,4 +1,5 @@
 import { CSSProperties } from "react";
+import type { HotAreaConfig } from "@pub-utils/svgHotArea/types.ts";
 
 /**
  * 单张图片的配置

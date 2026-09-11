@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState, useMemo } from "react";
 import iro from "@jaames/iro";
+import { createIroPicker } from "../createIroPicker";
 import { parseHexColor, toHex, RGBA, rgbaToHsla, HSLA } from "../utils/color";
 
 interface ColorPickerWithSlidersProps {
@@ -73,7 +74,7 @@ export const ColorPickerWithSliders: React.FC<ColorPickerWithSlidersProps> = ({
     try {
       // 创建 RGB 滑块组
       if (!rgbColorPickerRef.current) {
-        rgbColorPickerRef.current = new iro.ColorPicker(rgbPickerRef.current, {
+        rgbColorPickerRef.current = createIroPicker(rgbPickerRef.current, {
           width: 320,
           color: iroColor,
           layout: [
@@ -109,7 +110,7 @@ export const ColorPickerWithSliders: React.FC<ColorPickerWithSlidersProps> = ({
 
       // 创建 HSL 滑块组
       if (!hslColorPickerRef.current) {
-        hslColorPickerRef.current = new iro.ColorPicker(hslPickerRef.current, {
+        hslColorPickerRef.current = createIroPicker(hslPickerRef.current, {
           width: 320,
           color: iroColor,
           layout: [
@@ -145,7 +146,7 @@ export const ColorPickerWithSliders: React.FC<ColorPickerWithSlidersProps> = ({
 
       // 创建透明度滑块
       if (enableAlpha && alphaPickerRef.current && !alphaColorPickerRef.current) {
-        alphaColorPickerRef.current = new iro.ColorPicker(alphaPickerRef.current, {
+        alphaColorPickerRef.current = createIroPicker(alphaPickerRef.current, {
           width: 320,
           color: iroColor,
           layout: [

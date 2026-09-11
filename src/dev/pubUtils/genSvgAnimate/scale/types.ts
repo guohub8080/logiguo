@@ -45,6 +45,10 @@ export interface ScaleAnimationConfig {
    * - false: 替换其他变换
    */
   isAdditive?: boolean;
+  /**
+   * 是否相对缩放模式（目标值为相对当前比例的增量），默认 false
+   */
+  isRelativeScale?: boolean;
   /** 触发事件类型，留空或 'auto' 表示自动开始 */
   beginType?: SvgBeginEventType;
   /**

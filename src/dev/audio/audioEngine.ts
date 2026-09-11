@@ -17,9 +17,10 @@ const WORKLET_URL = "./soundfont/spessasynth_processor.min.js"
 export type EngineStatus = "uninitialized" | "loading" | "ready" | "error"
 
 export const engineStatusAtom = atom<EngineStatus>("uninitialized")
-export const engineErrorAtom = atom<string | null>(null)
-/** 当前已加载的音源 URL */
-export const currentSoundFontAtom = atom<string | null>(null)
+/** 引擎错误信息，空串 = 无错误 */
+export const engineErrorAtom = atom<string>("")
+/** 当前已加载的音源 URL，空串 = 未加载 */
+export const currentSoundFontAtom = atom<string>("")
 
 // synth/ctx 引用存在 atom（避免 HMR 重置模块变量导致实例丢失）
 const refAtom = atom<{ synth: WorkletSynthesizer | null; ctx: AudioContext | null; seq: Sequencer | null }>({ synth: null, ctx: null, seq: null })
@@ -86,7 +87,7 @@ export async function initAudioEngine(soundFontUrl?: string): Promise<WorkletSyn
 	}
 
 	store.set(engineStatusAtom, "loading")
-	store.set(engineErrorAtom, null)
+	store.set(engineErrorAtom, "")
 
 	try {
 		const ctx = new AudioContext()

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import iro from '@jaames/iro';
+import { createIroPicker } from '../createIroPicker';
 import { Pipette } from 'lucide-react';
 import { parseHexColor, toHex } from '../utils/color';
 import { RgbSliders } from './RgbSliders';
@@ -79,11 +80,13 @@ export const IroLayoutExamples: React.FC<IroLayoutExamplesProps> = ({
     circle: null,
   });
 
-  const colorPickerRefs = React.useRef<Record<LayoutType, any>>({
+  // alpha 滑块实例也挂在这（LayoutType 之外的额外键）
+  const colorPickerRefs = React.useRef<Record<LayoutType, any> & { alpha?: any }>({
     default: null,
     box: null,
     sliders: null,
     circle: null,
+    alpha: null,
   });
 
   const [isInitialized, setIsInitialized] = React.useState<Record<LayoutType, boolean>>({
@@ -182,7 +185,7 @@ export const IroLayoutExamples: React.FC<IroLayoutExamplesProps> = ({
           }
 
           // 创建取色器实例
-          colorPickerRefs.current[layout] = new iro.ColorPicker(container, config);
+          colorPickerRefs.current[layout] = createIroPicker(container, config);
 
           // 监听颜色变化事件
           colorPickerRefs.current[layout].on('color:change', (color: any) => {
@@ -523,7 +526,7 @@ export const IroLayoutExamples: React.FC<IroLayoutExamplesProps> = ({
       <div className="color-picker-card rounded-xl border bg-card p-4 flex flex-col">
         <h3 className="text-base font-semibold text-foreground mb-3">圆形选择</h3>
         <div className="flex-1 flex items-center justify-center">
-          <div ref={(el) => pickerRefs.current.default = el} />
+          <div ref={(el) => { pickerRefs.current.default = el }} />
         </div>
       </div>
 
@@ -531,7 +534,7 @@ export const IroLayoutExamples: React.FC<IroLayoutExamplesProps> = ({
       <div className="color-picker-card rounded-xl border bg-card p-4 flex flex-col">
         <h3 className="text-base font-semibold text-foreground mb-3">方形选择</h3>
         <div className="flex-1 flex items-center justify-center">
-          <div ref={(el) => pickerRefs.current.box = el} />
+          <div ref={(el) => { pickerRefs.current.box = el }} />
         </div>
       </div>
 

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import iro from '@jaames/iro';
+import { createIroPicker } from '../createIroPicker';
 import { parseHexColor, toHex } from '../utils/color';
 
 interface EmbeddedIroPickerProps {
@@ -76,7 +77,7 @@ export const EmbeddedIroPicker: React.FC<EmbeddedIroPickerProps> = ({
         }
 
         // 创建取色器实例
-        colorPickerRef.current = new iro.ColorPicker(pickerRef.current, config);
+        colorPickerRef.current = createIroPicker(pickerRef.current, config);
 
         // 监听颜色变化事件
         colorPickerRef.current.on('color:change', (color: any) => {

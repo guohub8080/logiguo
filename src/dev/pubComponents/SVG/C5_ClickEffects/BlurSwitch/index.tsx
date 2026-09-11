@@ -147,7 +147,7 @@ const BlurSwitch = (props: {
                                 />
                             </foreignObject>
                         </g>
-                    </SvgEx>
+                    </svg>
                 </SectionEx>
             </SectionEx>
         </SectionEx>

@@ -13,7 +13,7 @@ const TypeWriter: React.FC = () => {
         ]}
         wrapper="span"
         cursor={true}
-        deletionSpeed={300}
+        deletionSpeed={{ type: 'keyStrokeDelayInMs', value: 300 }}
         repeat={Infinity}
         className="text-2xl font-light inline-block w-fit rounded-2xl bg-gray-50 whitespace-pre-line text-indigo-600 px-12 py-8"
       />

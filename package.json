@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "lsof -ti:6868 | xargs kill -9 2>/dev/null; vite",
-    "build": "tsc && vite build",
+    "build": "tsc -b && vite build",
     "build:single": "SINGLE_FILE=true vite build",
     "gh": "GITHUB_PAGES=true pnpm build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
@@ -66,6 +66,7 @@
     "@radix-ui/react-use-controllable-state": "^1.2.2",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.6.1",
+    "@shikijs/transformers": "^3.23.0",
     "@types/mdx": "^2.0.13",
     "@types/react-syntax-highlighter": "^15.5.13",
     "@uidotdev/usehooks": "^2.4.1",

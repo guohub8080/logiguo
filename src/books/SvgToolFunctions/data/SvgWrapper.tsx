@@ -21,13 +21,14 @@ export const SvgWrapper = ({ children, showReplayButton = false }: SvgWrapperPro
 
     const svgContent = (() => {
         if (isValidElement(children) && children.type === 'svg') {
-            return cloneElement(children, {
+            const svgEl = children as React.ReactElement<React.SVGProps<SVGSVGElement>>;
+            return cloneElement(svgEl, {
                 style: {
                     border: '2px solid #d1d5db',
                     borderRadius: '8px',
                     backgroundColor: '#f9fafb',
                     padding: '8px',
-                    ...children.props.style
+                    ...svgEl.props.style
                 }
             });
         }
