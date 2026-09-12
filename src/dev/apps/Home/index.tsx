@@ -38,8 +38,8 @@ export default function Home() {
 
 				{/* 操作条已移除：设置/关于/GitHub 由导航栏右上角承载 */}
 
-				{/* 内容分区列表（排除 system，它在操作条） */}
-				<div className="mt-6 space-y-6">
+				{/* 内容分区列表（排除 system，由导航栏承载） */}
+				<div className="mt-12 space-y-6">
 					{sections.filter((s) => s.id !== "system").map((section) => (
 						<SectionBlock
 							key={section.id}
