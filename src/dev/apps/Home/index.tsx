@@ -85,7 +85,7 @@ export default function Home() {
 							<svg viewBox="0 0 480 554" className="w-5 h-5 text-neutral-500" xmlns="http://www.w3.org/2000/svg">
 								<path d="M53.253,199.859L53.253,384.338L213.026,476.578L213.026,292.114L53.253,199.859ZM186.4,30.746L239.667,0L479.32,138.366L479.32,169.113L266.279,292.114L266.294,476.592L426.052,384.338L426.052,322.845L319.546,384.338L319.546,322.845L479.305,230.606L479.32,415.085L239.667,553.451L0,415.085L0,138.366L26.641,122.986L239.667,245.987L399.426,153.747L186.4,30.746Z" fill="currentColor" fillRule="nonzero" />
 							</svg>
-							<span className="text-[11px] text-neutral-600">Built by guohub8080 · Bilibili @方块郭</span>
+							<span className="text-[11px] text-neutral-600">Built by guohub8080</span>
 						</div>
 					</div>
 				</div>
