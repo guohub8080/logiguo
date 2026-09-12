@@ -60,7 +60,7 @@ export default function NavigationPanel({ onNavigate, onClose }: NavigationPanel
       section: 'system',
       title: '设置',
       description: '个性化偏好配置',
-      icon: <Settings className="w-8 h-8" />,
+      icon: <Settings className="w-8 h-8" strokeWidth={2.5} />,
       href: `/${routerPaths.settings}`,
       color: '#64748b',
     },
@@ -69,9 +69,17 @@ export default function NavigationPanel({ onNavigate, onClose }: NavigationPanel
       section: 'system',
       title: '关于',
       description: '关于本项目',
-      icon: <Info className="w-8 h-8" />,
+      // 彩色蓝底 ⓘ（品牌图标，与导航栏关于按钮同款）
+      icon: (
+        <svg viewBox="0 0 1024 1024" className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+          <path d="M512.034133 512.034133m-485.0688 0a485.0688 485.0688 0 1 0 970.1376 0 485.0688 485.0688 0 1 0-970.1376 0Z" fill="#278BED" />
+          <path d="M512 1024a512 512 0 1 1 512-512 512.580267 512.580267 0 0 1-512 512z m0-970.103467a458.103467 458.103467 0 1 0 458.103467 458.103467 458.6496 458.6496 0 0 0-458.103467-458.103467z" fill="#278BED" />
+          <path d="M512 840.9088a41.233067 41.233067 0 0 1-43.2128-38.877867v-340.8896a41.198933 41.198933 0 0 1 43.2128-38.843733 41.1648 41.1648 0 0 1 43.2128 38.843733v340.8896a41.198933 41.198933 0 0 1-43.2128 38.877867z" fill="#FFFFFF" />
+          <path d="M512 273.2032m-66.491733 0a66.491733 66.491733 0 1 0 132.983466 0 66.491733 66.491733 0 1 0-132.983466 0Z" fill="#FFFFFF" />
+        </svg>
+      ),
       href: '/about',
-      color: '#64748b',
+      color: '#278BED',
     },
   ]
 

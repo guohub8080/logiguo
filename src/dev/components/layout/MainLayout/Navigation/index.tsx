@@ -325,17 +325,18 @@ export default function Navigation() {
 
           {/* 右侧操作区 */}
           <div className="flex items-center gap-2 lg:gap-4">
-            {/* 关于按钮 - 仅 home 页显示（其他页从导航面板/操作条进入） */}
+            {/* 关于按钮 - 仅 home 页显示；用彩色蓝底 ⓘ（品牌图标，原 cardsConfig 关于卡同款） */}
             {isHomePage && (
               <a
                 href="/about"
                 onClick={(e) => { e.preventDefault(); navigate('/about'); }}
                 className="size-6 flex items-center justify-center hover:opacity-80 hover:scale-110 transition-all duration-300"
               >
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" className="size-[18px]" strokeWidth={2.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 16v-4" />
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 8h.01" />
+                <svg viewBox="0 0 1024 1024" className="size-[18px]" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M512.034133 512.034133m-485.0688 0a485.0688 485.0688 0 1 0 970.1376 0 485.0688 485.0688 0 1 0-970.1376 0Z" fill="#278BED" />
+                  <path d="M512 1024a512 512 0 1 1 512-512 512.580267 512.580267 0 0 1-512 512z m0-970.103467a458.103467 458.103467 0 1 0 458.103467 458.103467 458.6496 458.6496 0 0 0-458.103467-458.103467z" fill="#278BED" />
+                  <path d="M512 840.9088a41.233067 41.233067 0 0 1-43.2128-38.877867v-340.8896a41.198933 41.198933 0 0 1 43.2128-38.843733 41.1648 41.1648 0 0 1 43.2128 38.843733v340.8896a41.198933 41.198933 0 0 1-43.2128 38.877867z" fill="#FFFFFF" />
+                  <path d="M512 273.2032m-66.491733 0a66.491733 66.491733 0 1 0 132.983466 0 66.491733 66.491733 0 1 0-132.983466 0Z" fill="#FFFFFF" />
                 </svg>
                 <span className="sr-only">关于作者</span>
               </a>
