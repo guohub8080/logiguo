@@ -3,8 +3,8 @@
  * Home 页面卡片配置
  *
  * 站点定位：逻辑郭（LogiGuo）—— 逻辑、数学与代码的工具箱（由 guookcase 复制改造）
- * 分区（section）：站点 / 关于（单一通用导航组：logiguo 各部署镜像、GitHub 仓库、关于作者）
- * → 语言学习 / 写作积累（主轴）→ 音乐与创作（含 DAW 外链）/ 其他工具（存量）
+ * 分区（section）：站点（本站部署镜像）→ 语言学习 / 写作积累（主轴）→ 音乐与创作（含 DAW 外链）/ 其他工具（存量）
+ * GitHub 仓库与关于作者不设卡片：分别由导航栏右上角猫标 / ⓘ（home 页）承载
  * 每个分区有若干子项（CardData），子项可以是 ready（真实功能）或 placeholder（占位，开发中）。
  */
 import React from "react"
@@ -74,7 +74,7 @@ export interface Section {
 export const sections: Section[] = [
 	{
 		id: "sites",
-		name: "站点 / 关于",
+		name: "站点",
 		accent: "#F59E0B",
 		icon: <Globe className="w-4 h-4" />,
 	},
@@ -161,31 +161,6 @@ const sitesReady: CardData[] = [
 		icon: <RoundBadge><VercelIcon /></RoundBadge>,
 		href: "https://logiguo.vercel.app",
 		color: "#181717",
-	},
-	{
-		id: "github-repo",
-		section: "sites",
-		title: "GitHub 仓库",
-		description: "guohub8080/logiguo",
-		icon: <IoLogoGithub />,
-		href: "https://github.com/guohub8080/logiguo",
-		color: "#181717",
-	},
-	{
-		id: "about",
-		section: "sites",
-		title: "关于作者",
-		description: <>你好，我是<span style={{ fontWeight: 700 }}>方块郭</span></>,
-		icon: (
-			<svg viewBox="0 0 1024 1024" className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-				<path d="M512.034133 512.034133m-485.0688 0a485.0688 485.0688 0 1 0 970.1376 0 485.0688 485.0688 0 1 0-970.1376 0Z" fill="#278BED" />
-				<path d="M512 1024a512 512 0 1 1 512-512 512.580267 512.580267 0 0 1-512 512z m0-970.103467a458.103467 458.103467 0 1 0 458.103467 458.103467 458.6496 458.6496 0 0 0-458.103467-458.103467z" fill="#278BED" />
-				<path d="M512 840.9088a41.233067 41.233067 0 0 1-43.2128-38.877867v-340.8896a41.198933 41.198933 0 0 1 43.2128-38.843733 41.1648 41.1648 0 0 1 43.2128 38.843733v340.8896a41.198933 41.198933 0 0 1-43.2128 38.877867z" fill="#FFFFFF" />
-				<path d="M512 273.2032m-66.491733 0a66.491733 66.491733 0 1 0 132.983466 0 66.491733 66.491733 0 1 0-132.983466 0Z" fill="#FFFFFF" />
-			</svg>
-		),
-		href: "/about",
-		color: "#64748B",
 	},
 ]
 
