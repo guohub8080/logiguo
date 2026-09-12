@@ -58,7 +58,7 @@ const FollowMe = () => {
 					<div className="flex justify-center">
 						<QRCodeSVG
 							level="H"
-							value="http://weixin.qq.com/r/BBNaQrHEruzRrfUh90YW"
+							value="http://weixin.qq.com/r/mp/niOhuSfEBHp7rWPa93aM"
 							bgColor={qrBgColor}
 							fgColor="hsl(var(--foreground))"
 							size={105}
@@ -68,7 +68,7 @@ const FollowMe = () => {
 						<img src={wechatLogo} className="w-5" alt=""/>
 						<div className="text-sm mt-1.5 text-card-foreground text-center">
 							微信公众号<br/>
-							<span className="text-primary">@方块郭</span>
+							<span className="text-primary">方块郭的想象工厂</span>
 						</div>
 					</div>
 				</div>
