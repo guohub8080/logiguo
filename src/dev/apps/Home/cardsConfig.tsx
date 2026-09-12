@@ -74,7 +74,7 @@ export interface Section {
 export const sections: Section[] = [
 	{
 		id: "sites",
-		name: "站点",
+		name: "镜像部署",
 		accent: "#F59E0B",
 		icon: <Globe className="w-4 h-4" />,
 	},
