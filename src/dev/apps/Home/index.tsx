@@ -7,36 +7,9 @@
  */
 import React from "react"
 import { useNavigate } from 'react-router'
-import { Settings as SettingsIcon, Info } from "lucide-react"
-import { IoLogoGithub } from "react-icons/io5"
 import Hero from "./Hero"
 import SectionBlock from "./SectionBlock"
 import { sections, initialCards } from "./cardsConfig.tsx"
-import { cn } from "@shadcn/lib/utils.ts"
-import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@shadcn/components/ui/tooltip.tsx"
-import routerPaths from "@dev/router/paths.ts"
-
-// 系统操作条（Hero 下方专属引导，不混在普通分区里）
-const systemActions = [
-	{
-		id: "settings",
-		label: "设置",
-		icon: <SettingsIcon className="w-4 h-4" />,
-		href: `/${routerPaths.settings}`,
-	},
-	{
-		id: "about",
-		label: "关于作者",
-		icon: <Info className="w-4 h-4" />,
-		href: "/about",
-	},
-	{
-		id: "github",
-		label: "GitHub",
-		icon: <IoLogoGithub className="w-4 h-4" />,
-		href: "https://github.com/guohub8080/logiguo",
-	},
-]
 
 export default function Home() {
 	const navigate = useNavigate()
@@ -63,38 +36,7 @@ export default function Home() {
 					<span className="whitespace-nowrap">逻辑、数学与代码的</span><span className="whitespace-nowrap">一站式工具箱</span>
 				</p>
 
-				{/* 操作条：系统 icon 按钮（居中） */}
-					<div className="mt-6 flex items-center justify-center gap-2.5">
-					{/* 系统按钮：圆形 icon（无文字） */}
-					{systemActions.map((action) => (
-						<TooltipProvider key={action.id} delayDuration={200}>
-							<Tooltip>
-								<TooltipTrigger asChild>
-									<button
-										onClick={() => handleCardClick(action.href)}
-										className={cn(
-											"group inline-flex items-center justify-center w-10 h-10 rounded-full",
-											"backdrop-blur-xl backdrop-saturate-150",
-											"bg-white/40 dark:bg-white/10 border border-white/40 dark:border-white/15",
-											"shadow-[0_1px_2px_rgba(0,0,0,0.04),inset_0_1px_0_rgba(255,255,255,0.5)]",
-											"dark:shadow-[0_1px_2px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.1)]",
-											"text-foreground/70 hover:text-foreground",
-											"hover:bg-white/60 dark:hover:bg-white/20 hover:scale-[1.06]",
-											"transition-all duration-200"
-										)}
-									>
-										<span className="transition-transform duration-200 group-hover:scale-110">
-											{action.icon}
-										</span>
-									</button>
-								</TooltipTrigger>
-								<TooltipContent side="top" className="text-xs">
-									{action.label}
-								</TooltipContent>
-							</Tooltip>
-						</TooltipProvider>
-					))}
-				</div>
+				{/* 操作条已移除：设置/关于/GitHub 由导航栏右上角承载 */}
 
 				{/* 内容分区列表（排除 system，它在操作条） */}
 				<div className="mt-6 space-y-6">
