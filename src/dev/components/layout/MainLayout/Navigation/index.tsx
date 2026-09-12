@@ -332,7 +332,7 @@ export default function Navigation() {
                 onClick={(e) => { e.preventDefault(); navigate('/about'); }}
                 className="size-6 flex items-center justify-center hover:opacity-80 hover:scale-110 transition-all duration-300"
               >
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" className="size-5" strokeWidth={2.5}>
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" className="size-[18px]" strokeWidth={2.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 16v-4" />
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 8h.01" />
