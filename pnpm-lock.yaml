@@ -227,9 +227,6 @@ importers:
       motion:
         specifier: ^12.23.24
         version: 12.23.26(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
-      music12:
-        specifier: link:../music12
-        version: link:../music12
       pnpm:
         specifier: ^8.15.9
         version: 8.15.9
@@ -299,12 +296,6 @@ importers:
       shiki:
         specifier: ^3.13.0
         version: 3.20.0
-      spessasynth_core:
-        specifier: ^4.3.16
-        version: 4.3.16
-      spessasynth_lib:
-        specifier: ^4.3.12
-        version: 4.3.12
       tailwind-merge:
         specifier: ^3.3.1
         version: 3.4.0
@@ -4560,17 +4551,6 @@ packages:
   space-separated-tokens@2.0.2:
     resolution: {integrity: sha512-PEGlAwrG8yXGXRjW32fGbg66JAlOAwbObuqVoJpv/mRgoWDQfgH1wDPvtzWyUSNAXBGSk8h755YDbbcEy3SH2Q==}
 
-  spessasynth_core@4.3.16:
-    resolution: {integrity: sha512-ZEbPMeJgyuS/3lRP7l8Kvr2MYkW5gqFdPCi15GjeCgCVm/gPS2txDFdH5ouwJ/9HGQxE7NhWco/OnpznLISaaA==}
-    deprecated: Only the latest version of spessasynth_core is supported.
-
-  spessasynth_core@4.3.22:
-    resolution: {integrity: sha512-qP6NkcZLmTLIs9fCUh2IhZRkd3Junwu8ppD4K0l/0R+Lo4P48d4Rbe8YQ8RlEYyRKFz8HcPM75sXYVQLAb7k4A==}
-
-  spessasynth_lib@4.3.12:
-    resolution: {integrity: sha512-74G7z9B/b6vwZNo/i3YwKiinYhJKCNdu1A0DeYTFoOPoHFqGD7tE1AvetmWZuOaxr7UukEoNt2m4O5KDFn1kuA==}
-    deprecated: Only the latest version of spessasynth_lib is supported.
-
   split-on-first@1.1.0:
     resolution: {integrity: sha512-43ZssAJaMusuKWL8sKUBQXHWOpq8d6CfN/u1p4gUzfJkM05C8rxTmYrkIPTXapZpORA6LkkzcUulJ8FqA7Uudw==}
     engines: {node: '>=6'}
@@ -4604,9 +4584,6 @@ packages:
 
   stats.js@0.17.0:
     resolution: {integrity: sha512-hNKz8phvYLPEcRkeG1rsGmV5ChMjKDAWU7/OJJdDErPBNChQXxCo3WZurGpnWc6gZhAzEPFad1aVgyOANH1sMw==}
-
-  stb-vorbis@0.0.6:
-    resolution: {integrity: sha512-CyvjJEGROIdnuZknwFvdOfMIO1ssUxO2OawsXCR3IlbJ8z2IMBjDe8FDxFJqBfLgf1ZOdqvoHAYx3Xk8q9rbbg==}
 
   strict-uri-encode@2.0.0:
     resolution: {integrity: sha512-QwiXZgpRcKkhTj2Scnn++4PKtWsH0kpzZ62L2R6c/LUVYv7hVnZqcg2+sMuT6R7Jusu1vviK/MFsu6kNJfWlEQ==}
@@ -9795,16 +9772,6 @@ snapshots:
 
   space-separated-tokens@2.0.2: {}
 
-  spessasynth_core@4.3.16: {}
-
-  spessasynth_core@4.3.22:
-    dependencies:
-      stb-vorbis: 0.0.6
-
-  spessasynth_lib@4.3.12:
-    dependencies:
-      spessasynth_core: 4.3.22
-
   split-on-first@1.1.0: {}
 
   sprintf-js@1.0.3: {}
@@ -9836,8 +9803,6 @@ snapshots:
       three: 0.184.0
 
   stats.js@0.17.0: {}
-
-  stb-vorbis@0.0.6: {}
 
   strict-uri-encode@2.0.0: {}
 

@@ -25,16 +25,6 @@ const routerPaths = {
   // 本站组件（WebDevComps）
   webDev: "web-dev",
 
-  // 工具
-  shadowTool: "shadow-tool",
-
-  // 音乐相关
-  music12: "music12",
-  musicTheory: "music-theory",
-  soundFont: "sound-font",
-  mtkit: "mtkit",
-  jianpuTable: "jianpu-table",
-
   // 前端相关
   color: "color",
 

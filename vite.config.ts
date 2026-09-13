@@ -238,8 +238,6 @@ export default defineConfig({
       "@articles": path.resolve(__dirname, "./src/articles"),
       "@mdx": path.resolve(__dirname, "./src/dev/components/mdx"),
       "@book-comps": path.resolve(__dirname, "./src/dev/components/bookComponents"),
-      "@music-comps": path.resolve(__dirname, "./src/dev/components/musicComps"),
-      "@music12doc": path.resolve(__dirname, "./src/books/Music12Document"),
       "@pubHTML": path.resolve(__dirname, "./src/dev/pubComponents/PureHTML"),
       "@pubSVG": path.resolve(__dirname, "./src/dev/pubComponents/SVG"),
       "@pubUtils": path.resolve(__dirname, "./src/dev/pubComponents/PubUtils"),

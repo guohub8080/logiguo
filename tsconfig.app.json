@@ -72,17 +72,11 @@
       "@articles/*": [
         "./src/articles/*"
       ],
-      "@music12doc/*": [
-        "./src/books/Music12Document/*"
-      ],
       "@mdx/*": [
         "./src/dev/components/mdx/*"
       ],
       "@book-comps/*": [
         "./src/dev/components/bookComponents/*"
-      ],
-      "@music-comps/*": [
-        "./src/dev/components/musicComps/*"
       ],
       "@pubHTML/*": [
         "./src/dev/pubComponents/PureHTML/*"

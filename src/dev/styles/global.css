@@ -7,7 +7,6 @@
 
 /* 分拆文件引入组件特定的动画样式 - 保持 global.css 整洁 */
 @import "@shadcn/components/background/AuroraBackground/styles.css";
-@import "../components/musicComps/NoteText/fonts/music-fonts.css";
 
 /* 路由切换淡入动画（纯 CSS，零 JS 开销）*/
 @keyframes route-fade-in {

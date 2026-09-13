@@ -3,22 +3,13 @@
  * Home 页面卡片配置
  *
  * 站点定位：逻辑郭（LogiGuo）—— 逻辑、数学与代码的工具箱（由 guookcase 复制改造）
- * 分区（section）：站点（本站部署镜像）→ 语言学习 / 写作积累（主轴）→ 音乐与创作（含 DAW 外链）/ 其他工具（存量）
+ * 分区（section）：站点（本站部署镜像）→ 语言学习 / 写作积累（主轴）→ 其他工具
  * GitHub 仓库与关于作者不设卡片：分别由导航栏右上角猫标 / ⓘ（home 页）承载
  * 每个分区有若干子项（CardData），子项可以是 ready（真实功能）或 placeholder（占位，开发中）。
  */
 import React from "react"
-import { BookOpen, Music2, Info, Wrench, PenLine, Globe } from "lucide-react"
+import { BookOpen, Info, Wrench, PenLine, Globe } from "lucide-react"
 import { IoLogoGithub } from "react-icons/io5"
-
-// museason-daw 项目 Logo（三角已对齐品牌色 2 orange400）
-const MuseasonLogoIcon = () => (
-	<svg viewBox="0 0 596 597" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
-		<path d="M297.6,20.3L51.6,162.3L51.6,446.4L297.6,588.4L543.6,446.4L543.6,162.3L297.6,20.3Z" fill="white" fillRule="nonzero" />
-		<path d="M106.3,225.4L106.3,414.8L270.3,509.5L270.3,320.1L106.3,225.4ZM243,51.8L297.7,20.2L543.7,162.2L543.7,193.8L325,320.1L325,509.5L489,414.8L489,351.7L379.7,414.8L379.7,351.7L543.7,257L543.7,446.4L297.7,588.4L51.6,446.4L51.6,162.3L78.9,146.5L297.6,272.8L461.6,178.1L243,51.8Z" fill="rgb(59,119,245)" fillRule="nonzero" />
-		<path d="M79,146.5L297.6,20.3L297.6,272.8L79,146.5Z" fill="rgb(255,167,38)" fillRule="nonzero" />
-	</svg>
-)
 
 // 黑色圆徽章底（Vercel 等单色标用，与 Hero 操作条圆形按钮同风格）
 const RoundBadge = ({ children }: { children: React.ReactNode }) => (
@@ -44,9 +35,6 @@ const NetlifyIcon = () => (
 		<path fill="#00897b" d="M14.855 15.172h-1.523l-.127-.127V11.48c0-.634-.249-1.125-1.013-1.142c-.394-.01-.844 0-1.325.019l-.072.074v4.61l-.127.128H9.146l-.128-.127V8.956l.128-.127h3.425a2.41 2.41 0 0 1 2.41 2.41v3.806z"/>
 	</svg>
 )
-import Music12Icon from "../../assets/svgs/icons/Music12Icon.tsx"
-import MusicTheoryIcon from "../../../books/MusicTheoryDocument/data/MusicTheoryIcon.tsx"
-import SoundFontIcon from "../../../books/SoundFont/data/SoundFontIcon.tsx"
 import routerPaths from "@dev/router/paths.ts"
 
 // 卡片数据结构
@@ -62,7 +50,7 @@ export interface CardData {
 }
 
 // 分区定义
-export type SectionId = "sites" | "lang-learn" | "writing" | "music" | "other-tools" | "system"
+export type SectionId = "sites" | "lang-learn" | "writing" | "other-tools" | "system"
 
 export interface Section {
 	id: SectionId
@@ -89,12 +77,6 @@ export const sections: Section[] = [
 		name: "写作积累",
 		accent: "#F97316",
 		icon: <PenLine className="w-4 h-4" />,
-	},
-	{
-		id: "music",
-		name: "音乐与创作",
-		accent: "#059669",
-		icon: <Music2 className="w-4 h-4" />,
 	},
 	{
 		id: "other-tools",
@@ -208,86 +190,6 @@ const writingPlaceholders: CardData[] = [
 	status: "placeholder" as const,
 }))
 
-// ============================================================
-// 音乐与创作 —— 存量真实内容（DAW、乐理工具、乐理书）
-// ============================================================
-const musicReady: CardData[] = [
-	{
-		id: "daw",
-		section: "music",
-		title: "音乐工作站",
-		description: "daw.museason.org",
-		icon: <MuseasonLogoIcon />,
-		href: "https://daw.museason.org",
-		color: "#3B79F5",
-	},
-	{
-		id: "music-calculator",
-		section: "music",
-		title: "乐理计算器",
-		description: "音程、和弦、音阶计算",
-		icon: (
-			<svg className="w-9 h-9" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" style={{ display: "block", margin: "0 auto" }}>
-				<defs>
-					<linearGradient id="mtkitGrad" x1="247.75" y1="520.79" x2="244.85" y2="-1217.21" gradientTransform="translate(137.61 161.42) scale(.3 -.3)" gradientUnits="userSpaceOnUse">
-						<stop offset="0" stopColor="#5cc3f6" />
-						<stop offset="1" stopColor="#3771e8" />
-					</linearGradient>
-				</defs>
-				<polygon fill="#52aef2" points="361.4 85.5 361.4 162 164.8 195.5 164.8 120.5 361.4 85.5" />
-				<polygon fill="#4b9ef0" points="245.8 215.6 245.8 251.9 164.8 265.6 164.8 230.6 245.8 215.6" />
-				<polygon fill="#4691ee" points="245.8 279.7 245.8 316.4 164.8 330.1 164.8 295 245.8 279.7" />
-				<polygon fill="#4c9ff0" points="361.4 194.7 361.4 231 280.4 244.7 280.4 209.6 361.4 194.7" />
-				<polygon fill="#4085eb" points="245.8 344.6 245.8 380.9 164.8 394.6 164.8 360.1 245.8 344.6" />
-				<path fill="url(#mtkitGrad)" d="M422.6,11.3v341.7c-1,64.8-83.6,93.5-124.9,42.9-44.4-54.5,10.2-133.2,77.6-111,2,.6,11.8,5.4,12.3,4.8V47.6l-246.6,43.5c-.8,64.6-.3,129.2-.4,193.8,0,45.8,2.3,94.9,0,140.2-4.5,89.9-137.8,86.9-140.6-.8v-5.2c1.8-52.4,60.1-84.5,105.6-58.4,1.6-94.7-.7-189.4.4-284.1.1-10-3.7-27.5,8.8-30.5L412,0c5.8,0,11.1,5.6,10.7,11.3h-.1Z" />
-			</svg>
-		),
-		href: routerPaths.mtkit,
-		color: "#10b981",
-	},
-	{
-		id: "jianpu-table",
-		section: "music",
-		title: "简谱对应表",
-		description: "给定音名得出全调式简谱",
-		icon: (
-			<svg viewBox="-80 -80 1184 1184" className="w-9 h-9" xmlns="http://www.w3.org/2000/svg">
-				<path d="M56.888889 0h426.666667v483.555556H0V56.888889a56.888889 56.888889 0 0 1 56.888889-56.888889z" fill="#19A6FF" />
-				<path d="M0 540.444444h483.555556V1024H56.888889a56.888889 56.888889 0 0 1-56.888889-56.888889V540.444444zM540.444444 0H967.111111a56.888889 56.888889 0 0 1 56.888889 56.888889v426.666667H540.444444V0z" fill="#19A6FF" opacity=".3" />
-				<path d="M540.444444 540.444444H1024V967.111111a56.888889 56.888889 0 0 1-56.888889 56.888889H540.444444V540.444444z" fill="#19A6FF" />
-			</svg>
-		),
-		href: routerPaths.jianpuTable,
-		color: "#19A6FF",
-	},
-	{
-		id: "music-theory",
-		section: "music",
-		title: "乐理知识",
-		description: "流行和声等资料",
-		icon: <MusicTheoryIcon className="w-9 h-9" useGradient={true} />,
-		href: routerPaths.musicTheory,
-		color: "#8b5cf6",
-	},
-	{
-		id: "music12",
-		section: "music",
-		title: "Music12",
-		description: "音乐理论系统学习",
-		icon: <Music12Icon className="w-9 h-9" useGradient={true} />,
-		href: routerPaths.music12,
-		color: "#06B6D4",
-	},
-	{
-		id: "soundfont-info",
-		section: "music",
-		title: "SoundFont",
-		description: "查看 SoundFont 原理和相关推荐",
-		icon: <SoundFontIcon className="w-8 h-8" />,
-		href: routerPaths.soundFont,
-		color: "#E13455",
-	},
-]
 
 // ============================================================
 // 其他工具
@@ -358,7 +260,6 @@ export const initialCards: CardData[] = [
 	...sitesReady,
 	...langLearnPlaceholders,
 	...writingPlaceholders,
-	...musicReady,
 	...otherToolsReady,
 	...systemReady,
 ]
